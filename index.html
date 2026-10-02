@@ -4,278 +4,296 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tushar AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#070b17; --panel:#0c1224; --card:#111933; --line:#26304d;
-  --text:#f4f6ff; --muted:#a3adc8; --blue:#2f5bff; --blue2:#2448e6;
-  --grad:linear-gradient(135deg,#2563ff,#8b3dff);
-}
+:root{--bg:#060814;--panel:rgba(12,16,38,.78);--card:rgba(255,255,255,.055);--line:rgba(255,255,255,.1);--text:#f5f7ff;--muted:#9aa4c7;--g:linear-gradient(135deg,#4f7bff,#9b5cff)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);
-  background-image:radial-gradient(900px 500px at 50% -10%,#16204a 0%,transparent 70%);}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+body::before,body::after{content:"";position:fixed;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.38;pointer-events:none;animation:float 18s ease-in-out infinite alternate}
+body::before{background:#3d5bff;top:-180px;left:-120px}
+body::after{background:#9b3dff;bottom:-200px;right:-140px;animation-delay:-9s}
+@keyframes float{to{transform:translate(60px,40px)}}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-
-.app{display:flex;height:100%;padding-top:env(safe-area-inset-top,0)}
-.side{width:260px;background:var(--panel);border-right:1px solid var(--line);padding:18px 14px;display:none;flex-direction:column;gap:6px;overflow-y:auto}
-.new{display:flex;align-items:center;gap:10px;background:var(--blue);padding:12px 14px;border-radius:10px;font-weight:600;margin-bottom:12px;flex:none}
-.new:hover{background:var(--blue2)}
+.app{position:relative;z-index:1;display:flex;height:100dvh;padding-top:env(safe-area-inset-top,0)}
+.side{width:270px;background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--line);padding:18px 14px;display:none;flex-direction:column;gap:6px;overflow-y:auto}
+.new{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--g);padding:13px;border-radius:14px;font-weight:700;margin-bottom:14px;flex:none;box-shadow:0 8px 24px rgba(91,92,255,.35)}
 #history{display:flex;flex-direction:column;gap:4px}
-.hist-row{display:flex;align-items:center;border-radius:10px}
-.hist-row:hover,.hist-row.active{background:var(--card)}
-.hist{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 10px;text-align:left;color:var(--text)}
-.hist svg{color:#6f8bff;flex:none}
+.hist-row{display:flex;align-items:center;border-radius:12px;border:1px solid transparent}
+.hist-row:hover{background:var(--card)}
+.hist-row.active{background:rgba(120,110,255,.16);border-color:rgba(140,130,255,.35)}
+.hist{flex:1;min-width:0;display:flex;align-items:center;gap:11px;padding:11px 10px;text-align:left;font-size:15px}
+.hist svg{color:#8fa4ff;flex:none;width:19px;height:19px}
 .hist span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .del{padding:10px;color:var(--muted);font-size:20px;line-height:1}
 .del:hover{color:#ff7b7b}
 .empty{color:var(--muted);padding:10px;font-size:14px}
-
 .main{flex:1;display:flex;flex-direction:column;min-width:0}
-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
-.logo{width:44px;height:44px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:700;font-size:22px;flex:none}
-.brand{font-size:22px;font-weight:700}
-.nav{display:none;margin-left:auto;gap:28px;color:var(--muted)}
+header{display:flex;align-items:center;gap:12px;padding:12px 18px;background:rgba(8,11,28,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.logo{width:42px;height:42px;border-radius:14px;background:var(--g);display:grid;place-items:center;font-weight:800;font-size:21px;flex:none;box-shadow:0 0 22px rgba(120,100,255,.55)}
+.brand{font-size:20px;font-weight:800;letter-spacing:-.01em}
+.brand small{display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0}
+.nav{display:none;margin-left:auto;gap:26px;color:var(--muted);font-weight:500}
 .nav a{padding:6px 0;text-decoration:none;color:inherit}
-.nav a.on{color:#7d9bff;border-bottom:2px solid #7d9bff}
-.menu{margin-left:auto}
-
-#chat{flex:1;overflow-y:auto;padding:28px 18px 12px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth}
+.nav a.on{color:#a9b8ff;border-bottom:2px solid #8f7bff}
+.menu{margin-left:auto;width:42px;height:42px;border-radius:12px;background:var(--card);display:grid;place-items:center}
+#chat{flex:1;overflow-y:auto;padding:26px 16px 12px;scroll-behavior:smooth}
 .wrap{width:100%;max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
-.hero{text-align:center;padding:6px 0 4px}
-.hero h1{font-size:clamp(30px,6vw,40px);font-weight:700;letter-spacing:-.01em}
-.hero p{color:var(--muted);margin-top:12px;font-size:clamp(16px,3.6vw,18px);line-height:1.45}
-
+.hero{text-align:center;padding:14px 0 6px}
+.hero .orb{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:var(--g);display:grid;place-items:center;font-size:34px;font-weight:800;box-shadow:0 0 0 10px rgba(120,100,255,.12),0 0 50px rgba(120,100,255,.55)}
+.hero h1{font-size:clamp(30px,7vw,42px);font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,#fff,#b9c6ff 55%,#cfa9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);margin-top:12px;font-size:clamp(15px,3.6vw,17px);line-height:1.5}
 .chips{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chip{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid #1b2547;border-radius:14px;padding:16px;text-align:left;line-height:1.3;font-size:15px;transition:border-color .15s,background .15s}
-.chip:hover{border-color:#3a4b8f;background:#141e3d}
-.chip svg{flex:none;width:26px;height:26px}
-.c1{color:#4d7bff}.c2{color:#cfd6ee}.c3{color:#f5b942}.c4{color:#8b7bff}
-.chip span{color:var(--text)}
-
-.row{display:flex;gap:12px;align-items:flex-end}
+.chip{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;text-align:left;line-height:1.3;font-size:14.5px;font-weight:500;transition:transform .15s,border-color .15s,background .15s}
+.chip:hover{transform:translateY(-2px);border-color:rgba(150,140,255,.5);background:rgba(255,255,255,.08)}
+.ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c)}
+.c1{--c:#5b8bff}.c2{--c:#c8d2f5}.c3{--c:#ffc247}.c4{--c:#a98bff}
+.row{display:flex;gap:10px;align-items:flex-end;animation:in .25s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
 .row.user{justify-content:flex-end}
-.av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700}
-.av.bot{background:var(--grad)}
-.av.me{background:#232c47;color:#c5cde6}
-.bubble{max-width:min(78%,640px);padding:13px 16px;border-radius:18px;line-height:1.5;font-size:16px;white-space:pre-wrap;word-wrap:break-word}
-.user .bubble{background:var(--blue);border-bottom-right-radius:6px}
-.bot .bubble{background:var(--card);border-bottom-left-radius:6px}
-.time{display:block;font-size:12px;margin-top:6px;opacity:.6}
-
-form{padding:10px 18px calc(16px + env(safe-area-inset-bottom,0))}
-.bar{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:10px}
-.bar input{flex:1;min-width:0;height:56px;border-radius:999px;border:1.5px solid #3a4468;background:transparent;color:var(--text);padding:0 22px;font:inherit;font-size:16px;outline:none}
-.bar input::placeholder{color:#8a94b3}
-.bar input:focus{border-color:#7d9bff}
-.mic{width:56px;height:56px;border-radius:50%;border:1.5px solid #3a4468;display:grid;place-items:center;flex:none;color:var(--text)}
-.mic.on{background:#e5484d;border-color:#e5484d;animation:pulse 1s infinite}
+.av{width:36px;height:36px;border-radius:12px;flex:none;display:grid;place-items:center;font-weight:800}
+.av.bot{background:var(--g)}
+.av.me{background:rgba(255,255,255,.1);color:#c9d1ee}
+.bubble{max-width:min(80%,640px);padding:12px 16px;border-radius:20px;line-height:1.55;font-size:15.5px;word-wrap:break-word}
+.txt{white-space:pre-wrap}
+.txt code{background:rgba(255,255,255,.12);padding:1px 6px;border-radius:6px;font-size:.92em}
+.user .bubble{background:var(--g);border-bottom-right-radius:6px;box-shadow:0 8px 22px rgba(91,92,255,.3)}
+.bot .bubble{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.time{display:block;font-size:11.5px;margin-top:6px;opacity:.55}
+.dots{display:inline-flex;gap:5px;padding:6px 0}
+.dots i{width:7px;height:7px;border-radius:50%;background:#9fb0ff;animation:b 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes b{50%{transform:translateY(-5px);opacity:.5}}
+form{padding:6px 14px calc(14px + env(safe-area-inset-bottom,0));position:relative}
+#tray{max-width:820px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px}
+#tray:not(:empty){padding-bottom:10px}
+.fchip{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px 6px 5px 5px;font-size:13.5px;max-width:100%}
+.fchip img{width:40px;height:40px;border-radius:10px;object-fit:cover}
+.fchip .fi{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.fchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px}
+.fchip button{width:26px;height:26px;border-radius:50%;color:var(--muted);font-size:18px;line-height:1}
+.composer{position:relative;max-width:820px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:7px;background:rgba(18,22,48,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:999px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.composer:focus-within{border-color:rgba(150,140,255,.6)}
+.composer input[type=text]{flex:1;min-width:0;height:44px;background:transparent;border:0;outline:0;color:var(--text);padding:0 8px;font:inherit;font-size:16px}
+.composer input::placeholder{color:#8590b5}
+.round{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--muted)}
+.round:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.mic.on{background:#e5484d;color:#fff;animation:pulse 1s infinite}
 @keyframes pulse{50%{opacity:.6}}
-.send{width:56px;height:56px;border-radius:50%;background:#fff;color:#0b1020;display:grid;place-items:center;flex:none}
+.send{background:var(--g);color:#fff;box-shadow:0 6px 18px rgba(91,92,255,.5)}
+.send:hover{background:var(--g);color:#fff}
 .send:disabled{opacity:.5}
-.send svg{fill:currentColor;stroke:none;width:24px;height:24px}
-
+.send svg{fill:currentColor;stroke:none}
+.pop{position:absolute;left:0;bottom:62px;display:none;flex-direction:column;gap:2px;min-width:200px;padding:8px;background:rgba(20,24,52,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.55)}
+.pop.open{display:flex;animation:in .15s ease-out}
+.pop button{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;font-weight:600;font-size:15px;text-align:left}
+.pop button:hover{background:rgba(255,255,255,.08)}
+.pop .ic{width:36px;height:36px;border-radius:11px}
 @media(max-width:899px){
-  .side{display:flex;position:fixed;top:0;left:0;bottom:0;z-index:20;width:min(290px,85vw);transform:translateX(-100%);transition:transform .2s;padding-top:calc(18px + env(safe-area-inset-top,0))}
-  .side.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.6)}
-}
+.side{display:flex;position:fixed;top:0;left:0;bottom:0;z-index:20;width:min(300px,86vw);transform:translateX(-100%);transition:transform .22s;padding-top:calc(18px + env(safe-area-inset-top,0))}
+.side.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.7)}}
 @media(min-width:900px){
-  .side{display:flex}
-  .menu{display:none}
-  .nav{display:flex}
-  .chips{grid-template-columns:repeat(4,1fr)}
-  .chip{font-size:14px;padding:14px}
-  .chip svg{width:22px;height:22px}
-}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.side{display:flex}.menu{display:none}.nav{display:flex}
+.chips{grid-template-columns:repeat(4,1fr)}
+.chip{flex-direction:column;align-items:flex-start;gap:10px;padding:16px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,body::before,body::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="side">
-    <button class="new" id="newChat"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New Chat</button>
-    <div id="history"></div>
-  </aside>
-
-  <div class="main">
-    <header>
-      <div class="logo">T</div>
-      <div class="brand">Tushar AI</div>
-      <nav class="nav"><a href="#">Home</a><a href="#" class="on">Chat</a><a href="#">About</a></nav>
-      <button class="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    </header>
-
-    <div id="chat"><div class="wrap" id="wrap">
-      <div class="hero" id="hero">
-        <h1>How can I help you?</h1>
-        <p>Your personal AI assistant powered<br>by Microsoft Azure</p>
-      </div>
-      <div class="chips" id="chips">
-        <button class="chip c1"><svg viewBox="0 0 24 24"><path d="M5 20V12M12 20V5M19 20v-9"/></svg><span>Help me with marketing strategies</span></button>
-        <button class="chip c2"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg><span>Summarize this content</span></button>
-        <button class="chip c3"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z"/></svg><span>Give me business ideas</span></button>
-        <button class="chip c4"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg><span>Help me with MBA concepts</span></button>
-      </div>
-    </div></div>
-
-    <form id="form" autocomplete="off">
-      <div class="bar">
-        <input id="input" placeholder="Message Tushar AI..." aria-label="Message Tushar AI">
-        <button class="mic" id="mic" type="button" aria-label="Voice input"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
-        <button class="send" id="send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2.5 7z"/></svg></button>
-      </div>
-    </form>
-  </div>
+<aside class="side">
+<button class="new" id="newChat"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New Chat</button>
+<div id="history"></div>
+</aside>
+<div class="main">
+<header>
+<div class="logo">T</div>
+<div class="brand">Tushar AI<small>Personal AI Assistant</small></div>
+<nav class="nav"><a href="#">Home</a><a href="#" class="on">Chat</a><a href="#">About</a></nav>
+<button class="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+<div id="chat"><div class="wrap" id="wrap">
+<div class="hero"><div class="orb">T</div><h1>How can I help you?</h1><p>Your personal AI assistant powered<br>by Microsoft Azure</p></div>
+<div class="chips" id="chips">
+<button class="chip c1"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 20V12M12 20V5M19 20v-9"/></svg></div><span>Help me with marketing strategies</span></button>
+<button class="chip c2"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg></div><span>Summarize this content</span></button>
+<button class="chip c3"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z"/></svg></div><span>Give me business ideas</span></button>
+<button class="chip c4"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg></div><span>Help me with MBA concepts</span></button>
 </div>
-
+</div></div>
+<form id="form" autocomplete="off">
+<div id="tray"></div>
+<div class="composer">
+<div class="pop" id="pop">
+<button type="button" id="optCam"><div class="ic c1"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>Camera</button>
+<button type="button" id="optGal"><div class="ic c4"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 8"/></svg></div>Gallery</button>
+<button type="button" id="optFile"><div class="ic c3"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5"/></svg></div>Files</button>
+</div>
+<button class="round" id="attach" type="button" aria-label="Attach"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+<input type="file" id="camIn" accept="image/*" capture="environment" hidden>
+<input type="file" id="galIn" accept="image/*" multiple hidden>
+<input type="file" id="fileIn" accept=".pdf,.txt,.md,.csv,.json,text/plain,application/pdf" multiple hidden>
+<input type="text" id="input" placeholder="Message Tushar AI..." aria-label="Message Tushar AI">
+<button class="round mic" id="mic" type="button" aria-label="Voice input"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+<button class="round send" id="send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 2.5 2.5 7z"/></svg></button>
+</div>
+</form>
+</div>
+</div>
 <script>
-const API = 'https://tushar-ai-backend-ehcrdhf2hfa5dken.centralindia-01.azurewebsites.net/api/chat';
-const $ = id => document.getElementById(id);
-const wrap = $('wrap'), chat = $('chat'), input = $('input'), form = $('form'),
-      send = $('send'), hist = $('history'), side = document.querySelector('.side'), mic = $('mic');
-const now = () => new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+const API='https://tushar-ai-backend-ehcrdhf2hfa5dken.centralindia-01.azurewebsites.net/api/chat';
+const $=id=>document.getElementById(id);
+const wrap=$('wrap'),chat=$('chat'),input=$('input'),form=$('form'),send=$('send'),hist=$('history'),
+side=document.querySelector('.side'),mic=$('mic'),tray=$('tray'),pop=$('pop');
+const now=()=>new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+const fmt=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>');
+let chats=[],current=null,voiceMode=false,picked=[];
+try{chats=JSON.parse(localStorage.getItem('tushar_chats')||'[]')}catch(e){chats=[]}
+const save=()=>{try{localStorage.setItem('tushar_chats',JSON.stringify(chats))}catch(e){}};
 
-let chats = [], current = null, voiceMode = false;
-try { chats = JSON.parse(localStorage.getItem('tushar_chats') || '[]'); } catch (e) { chats = []; }
-const save = () => { try { localStorage.setItem('tushar_chats', JSON.stringify(chats)); } catch (e) {} };
-
-function addMsg(text, who, time){
-  const row = document.createElement('div'); row.className = 'row ' + who;
-  const av = `<div class="av ${who==='user'?'me':'bot'}">${who==='user'?'<svg viewBox="0 0 24 24" style="width:20px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>':'T'}</div>`;
-  const b = document.createElement('div'); b.className = 'bubble';
-  b.textContent = text;
-  const t = document.createElement('span'); t.className = 'time'; t.textContent = time || now();
-  b.appendChild(t);
-  row.innerHTML = who === 'user' ? '' : av;
-  row.appendChild(b);
-  if (who === 'user') row.insertAdjacentHTML('beforeend', av);
-  wrap.appendChild(row);
-  chat.scrollTop = chat.scrollHeight;
-  return b;
+function addMsg(text,who,time){
+const row=document.createElement('div');row.className='row '+who;
+const av=`<div class="av ${who==='user'?'me':'bot'}">${who==='user'?'<svg viewBox="0 0 24 24" style="width:19px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>':'T'}</div>`;
+const b=document.createElement('div');b.className='bubble';
+const x=document.createElement('div');x.className='txt';
+if(who==='bot')x.innerHTML=fmt(text);else x.textContent=text;
+const t=document.createElement('span');t.className='time';t.textContent=time||now();
+b.append(x,t);
+row.innerHTML=who==='user'?'':av;row.appendChild(b);
+if(who==='user')row.insertAdjacentHTML('beforeend',av);
+wrap.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;
 }
-
-function clearMessages(){ wrap.querySelectorAll('.row').forEach(r => r.remove()); }
+const setBot=(b,t)=>{b.querySelector('.txt').innerHTML=fmt(t)};
+function clearMessages(){wrap.querySelectorAll('.row').forEach(r=>r.remove())}
 
 function renderHistory(){
-  hist.innerHTML = '';
-  if (!chats.length){
-    const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'No chats yet';
-    hist.appendChild(e); return;
-  }
-  chats.forEach(c => {
-    const row = document.createElement('div');
-    row.className = 'hist-row' + (current && current.id === c.id ? ' active' : '');
-    const open = document.createElement('button'); open.className = 'hist';
-    open.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.5A8 8 0 1121 12z"/></svg><span></span>';
-    open.querySelector('span').textContent = c.title;
-    open.addEventListener('click', () => openChat(c.id));
-    const del = document.createElement('button'); del.className = 'del';
-    del.setAttribute('aria-label', 'Delete chat'); del.textContent = '×';
-    del.addEventListener('click', e => { e.stopPropagation(); deleteChat(c.id); });
-    row.append(open, del);
-    hist.appendChild(row);
-  });
+hist.innerHTML='';
+if(!chats.length){const e=document.createElement('div');e.className='empty';e.textContent='No chats yet';hist.appendChild(e);return}
+chats.forEach(c=>{
+const row=document.createElement('div');row.className='hist-row'+(current&&current.id===c.id?' active':'');
+const open=document.createElement('button');open.className='hist';
+open.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.5A8 8 0 1121 12z"/></svg><span></span>';
+open.querySelector('span').textContent=c.title;
+open.addEventListener('click',()=>openChat(c.id));
+const del=document.createElement('button');del.className='del';del.setAttribute('aria-label','Delete chat');del.textContent='×';
+del.addEventListener('click',e=>{e.stopPropagation();deleteChat(c.id)});
+row.append(open,del);hist.appendChild(row);
+});
 }
-
-function newChat(){
-  current = null;
-  clearMessages();
-  $('chips').style.display = '';
-  renderHistory();
-  side.classList.remove('open');
-}
-
+function newChat(){current=null;clearMessages();$('chips').style.display='';renderHistory();side.classList.remove('open')}
 function openChat(id){
-  const c = chats.find(x => x.id === id); if (!c) return;
-  current = c;
-  clearMessages();
-  $('chips').style.display = 'none';
-  c.messages.forEach(m => addMsg(m.text, m.who, m.time));
-  renderHistory();
-  side.classList.remove('open');
-  chat.scrollTop = chat.scrollHeight;
+const c=chats.find(x=>x.id===id);if(!c)return;
+current=c;clearMessages();$('chips').style.display='none';
+c.messages.forEach(m=>addMsg(m.text,m.who,m.time));
+renderHistory();side.classList.remove('open');chat.scrollTop=chat.scrollHeight;
 }
+function deleteChat(id){chats=chats.filter(c=>c.id!==id);save();if(current&&current.id===id)newChat();else renderHistory()}
 
-function deleteChat(id){
-  chats = chats.filter(c => c.id !== id);
-  save();
-  if (current && current.id === id) newChat(); else renderHistory();
+/* Attachments */
+function renderTray(){
+tray.innerHTML='';
+picked.forEach((f,i)=>{
+const c=document.createElement('div');c.className='fchip';
+if(f.kind==='image'){const im=document.createElement('img');im.src=f.data;c.appendChild(im)}
+else{const d=document.createElement('div');d.className='fi';d.textContent='📄';c.appendChild(d)}
+const s=document.createElement('span');s.textContent=f.name;
+const x=document.createElement('button');x.type='button';x.textContent='×';x.setAttribute('aria-label','Remove');
+x.onclick=()=>{picked.splice(i,1);renderTray()};
+c.append(s,x);tray.appendChild(c);
+});
 }
-
-async function getReply(text, prevId){
-  const r = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: text, previousResponseId: prevId })
-  });
-  const data = await r.json();
-  if (!r.ok) throw new Error(data.error || 'Backend request failed');
-  return data;
+const rd=(f,m)=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r[m](f)});
+const readImage=f=>new Promise((res,rej)=>{
+const img=new Image(),u=URL.createObjectURL(f);
+img.onload=()=>{
+const s=Math.min(1,1280/Math.max(img.width,img.height));
+const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.85));
+};
+img.onerror=rej;img.src=u;
+});
+async function addFiles(list){
+for(const f of list){
+try{
+if(f.type.startsWith('image/'))picked.push({name:f.name||'photo.jpg',kind:'image',type:'image/jpeg',data:await readImage(f)});
+else if(f.type==='application/pdf'){
+if(f.size>5e6){alert(f.name+' is over 5 MB.');continue}
+picked.push({name:f.name,kind:'file',type:f.type,data:await rd(f,'readAsDataURL')});
+}else if(/\.(txt|md|csv|json)$/i.test(f.name)||f.type.startsWith('text/'))
+picked.push({name:f.name,kind:'text',text:(await rd(f,'readAsText')).slice(0,20000)});
+else alert(f.name+' is not supported. Use images, PDF, or text files.');
+}catch(e){alert('Could not read '+f.name)}
 }
+renderTray();
+}
+[['camIn','optCam'],['galIn','optGal'],['fileIn','optFile']].forEach(([inp,btn])=>{
+$(btn).addEventListener('click',()=>{pop.classList.remove('open');$(inp).click()});
+$(inp).addEventListener('change',async e=>{await addFiles([...e.target.files]);e.target.value=''});
+});
+$('attach').addEventListener('click',e=>{e.stopPropagation();pop.classList.toggle('open')});
 
+async function getReply(text,prevId,atts){
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({message:text,previousResponseId:prevId,attachments:atts})});
+const data=await r.json();
+if(!r.ok)throw new Error(data.error||'Backend request failed');
+return data;
+}
 function speak(t){
-  if (!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+if(!('speechSynthesis' in window))return;
+speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(t));
 }
 
 async function ask(text){
-  text = text.trim(); if (!text) return;
-  $('chips').style.display = 'none';
-  if (!current){
-    current = { id: String(Date.now()), title: text.slice(0, 40), messages: [], lastId: null };
-    chats.unshift(current);
-  }
-  const c = current;
-  c.messages.push({ who: 'user', text, time: now() });
-  save(); renderHistory();
-  addMsg(text, 'user'); input.value = ''; send.disabled = true;
-  const pending = addMsg('…', 'bot');
-  let reply, ok = false;
-  try {
-    const d = await getReply(text, c.lastId);
-    c.lastId = d.id; reply = d.reply; ok = true;
-    c.messages.push({ who: 'bot', text: reply, time: now() });
-    save();
-  } catch (e) {
-    reply = 'Something went wrong. Check your connection and try again.';
-  }
-  if (current === c) pending.firstChild.textContent = reply;
-  if (ok && voiceMode) speak(reply);
-  send.disabled = false; chat.scrollTop = chat.scrollHeight;
+text=text.trim();if(!text&&!picked.length)return;
+const files=picked;picked=[];renderTray();
+if(!text)text='Please look at the attached file.';
+let sent=text;
+files.filter(f=>f.kind==='text').forEach(f=>{sent+='\n\n[File: '+f.name+']\n'+f.text});
+const atts=files.filter(f=>f.kind!=='text').map(f=>({name:f.name,type:f.type,data:f.data}));
+const shown=files.length?text+'\n📎 '+files.map(f=>f.name).join(', '):text;
+$('chips').style.display='none';
+if(!current){current={id:String(Date.now()),title:text.slice(0,40),messages:[],lastId:null};chats.unshift(current)}
+const c=current;
+c.messages.push({who:'user',text:shown,time:now()});
+save();renderHistory();
+addMsg(shown,'user');input.value='';send.disabled=true;
+const pending=addMsg('','bot');
+pending.querySelector('.txt').innerHTML='<span class="dots"><i></i><i></i><i></i></span>';
+let reply,ok=false;
+try{
+const d=await getReply(sent,c.lastId,atts);
+c.lastId=d.id;reply=d.reply;ok=true;
+c.messages.push({who:'bot',text:reply,time:now()});save();
+}catch(e){reply='Something went wrong. Check your connection and try again.'}
+if(current===c)setBot(pending,reply);
+if(ok&&voiceMode)speak(reply);
+send.disabled=false;chat.scrollTop=chat.scrollHeight;
 }
 
-form.addEventListener('submit', e => { e.preventDefault(); voiceMode = false; ask(input.value); });
-document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { voiceMode = false; ask(c.innerText); }));
-$('newChat').addEventListener('click', newChat);
-
-document.querySelector('.menu').addEventListener('click', e => {
-  e.stopPropagation();
-  side.classList.toggle('open');
-});
-document.addEventListener('click', e => {
-  if (!side.contains(e.target)) side.classList.remove('open');
+form.addEventListener('submit',e=>{e.preventDefault();voiceMode=false;ask(input.value)});
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{voiceMode=false;ask(c.innerText)}));
+$('newChat').addEventListener('click',newChat);
+document.querySelector('.menu').addEventListener('click',e=>{e.stopPropagation();side.classList.toggle('open')});
+document.addEventListener('click',e=>{
+if(!side.contains(e.target))side.classList.remove('open');
+if(!pop.contains(e.target))pop.classList.remove('open');
 });
 
-/* Voice input */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (!SR) {
-  mic.style.display = 'none';
-} else {
-  const rec = new SR();
-  rec.lang = 'en-IN';
-  rec.interimResults = false;
-  rec.onresult = e => { voiceMode = true; ask(e.results[0][0].transcript); };
-  rec.onend = () => mic.classList.remove('on');
-  rec.onerror = () => mic.classList.remove('on');
-  mic.addEventListener('click', () => {
-    if ('speechSynthesis' in window) speechSynthesis.cancel();
-    if (mic.classList.contains('on')) { rec.stop(); return; }
-    mic.classList.add('on');
-    try { rec.start(); } catch (e) { mic.classList.remove('on'); }
-  });
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){mic.style.display='none'}else{
+const rec=new SR();rec.lang='en-IN';rec.interimResults=false;
+rec.onresult=e=>{voiceMode=true;ask(e.results[0][0].transcript)};
+rec.onend=()=>mic.classList.remove('on');
+rec.onerror=()=>mic.classList.remove('on');
+mic.addEventListener('click',()=>{
+if('speechSynthesis' in window)speechSynthesis.cancel();
+if(mic.classList.contains('on')){rec.stop();return}
+mic.classList.add('on');
+try{rec.start()}catch(e){mic.classList.remove('on')}
+});
 }
-
 renderHistory();
 </script>
 </body>
