@@ -227,3 +227,241 @@ body {
     padding: 7px 8px 7px 16px;
     box-shadow: 0 5px 30px rgba(0,0,0,0.25);
 }
+    </style>
+
+</head>
+
+<body>
+
+<div style="min-height:100vh; display:flex; flex-direction:column;">
+
+    <!-- HEADER -->
+    <header style="
+        height:64px;
+        display:flex;
+        align-items:center;
+        padding:0 20px;
+        border-bottom:1px solid var(--border);
+        background:var(--panel);
+        flex-shrink:0;
+    ">
+        <div style="
+            width:38px;
+            height:38px;
+            border-radius:50%;
+            background:#111827;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:bold;
+            color:#ffffff;
+            margin-right:12px;
+        ">
+            T
+        </div>
+
+        <div>
+            <div style="font-size:18px;font-weight:600;">
+                Tushar AI
+            </div>
+            <div style="font-size:11px;color:#89919e;">
+                Personal AI Assistant
+            </div>
+        </div>
+    </header>
+
+
+    <!-- CHAT AREA -->
+    <main id="chat" style="
+        flex:1;
+        overflow-y:auto;
+        padding:24px 16px 120px;
+        max-width:900px;
+        width:100%;
+        margin:auto;
+    ">
+
+        <!-- WELCOME SCREEN -->
+        <div id="welcome" style="
+            min-height:60vh;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+        ">
+
+            <div style="
+                width:70px;
+                height:70px;
+                border-radius:50%;
+                background:#111827;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:30px;
+                font-weight:bold;
+                margin-bottom:22px;
+            ">
+                T
+            </div>
+
+            <h1 style="
+                font-size:32px;
+                margin:0 0 12px;
+            ">
+                How can I help you?
+            </h1>
+
+            <p style="
+                color:#89919e;
+                font-size:16px;
+                margin:0;
+            ">
+                Your personal AI assistant powered by Microsoft Azure
+            </p>
+
+            <p style="
+                color:#626b78;
+                font-size:13px;
+                margin-top:12px;
+            ">
+                Ask me anything to get started.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- INPUT -->
+    <div class="input-area" style="
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        background:linear-gradient(
+            transparent,
+            var(--bg) 25%
+        );
+        padding:30px 16px 20px;
+    ">
+
+        <div class="input-box" style="
+            max-width:850px;
+            margin:auto;
+        ">
+
+            <input
+                id="messageInput"
+                type="text"
+                placeholder="Message Tushar AI..."
+                autocomplete="off"
+                style="
+                    flex:1;
+                    border:none;
+                    outline:none;
+                    background:transparent;
+                    color:white;
+                    font-size:16px;
+                    padding:10px;
+                "
+            />
+
+            <button
+                onclick="sendMessage()"
+                style="
+                    width:48px;
+                    height:48px;
+                    border:none;
+                    border-radius:50%;
+                    background:#ffffff;
+                    color:#000000;
+                    font-size:22px;
+                    cursor:pointer;
+                "
+            >
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function sendMessage() {
+
+    const input = document.getElementById("messageInput");
+    const chat = document.getElementById("chat");
+    const welcome = document.getElementById("welcome");
+
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    // Remove welcome screen
+    if (welcome) {
+        welcome.remove();
+    }
+
+    // USER MESSAGE
+    const userMessage = document.createElement("div");
+    userMessage.className = "message user";
+    userMessage.textContent = message;
+
+    chat.appendChild(userMessage);
+
+    input.value = "";
+
+    // Typing indicator
+    const typing = document.createElement("div");
+    typing.className = "message ai";
+    typing.innerHTML = `
+        <div class="typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    `;
+
+    chat.appendChild(typing);
+
+    chat.scrollTop = chat.scrollHeight;
+
+
+    // Temporary AI response
+    setTimeout(() => {
+
+        typing.remove();
+
+        const aiMessage = document.createElement("div");
+        aiMessage.className = "message ai";
+
+        aiMessage.textContent =
+            "I'm connected to the Tushar AI interface. The Azure AI backend will be connected next.";
+
+        chat.appendChild(aiMessage);
+
+        chat.scrollTop = chat.scrollHeight;
+
+    }, 1200);
+}
+
+
+// Press Enter to send
+document.getElementById("messageInput").addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
