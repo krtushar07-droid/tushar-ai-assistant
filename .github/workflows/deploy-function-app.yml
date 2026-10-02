@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -25,9 +25,14 @@ jobs:
         working-directory: ./api
         run: npm install
 
+      - name: Prepare deployment package
+        run: |
+          New-Item -ItemType Directory -Force -Path deploy
+          Copy-Item -Path api\* -Destination deploy -Recurse -Force
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
           app-name: 'tushar-ai-backend'
-          package: './api'
+          package: './deploy'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
