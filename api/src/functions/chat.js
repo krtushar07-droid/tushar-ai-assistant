@@ -22,7 +22,7 @@ app.http("chat", {
           input: message,
           ...(previousResponseId ? { previous_response_id: previousResponseId } : {}),
         },
-        { body: { agent: { name: process.env.AGENT_NAME, type: "agent_reference" } } }
+        { body: { agent_reference: { name: process.env.AGENT_NAME, type: "agent_reference" } } }
       );
       return { jsonBody: { reply: res.output_text, id: res.id } };
     } catch (e) {
@@ -30,7 +30,7 @@ app.http("chat", {
       return {
         status: 500,
         jsonBody: {
-          version: "v5",
+          version: "v6",
           error: "Agent call failed",
           detail: String(e?.message || e),
           status: e?.status,
