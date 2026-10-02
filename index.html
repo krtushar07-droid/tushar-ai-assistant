@@ -144,25 +144,18 @@ function addMsg(text, who){
    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:text})});
    return (await r.json()).reply;
 */
+let lastId = null;
 async function getReply(text){
-  const r = await fetch('https://tushar-ai-backend.azurewebsites.net/api/chat', {
+  const r = await fetch('https://tushar-ai-backend-ehcrdhf2hfa5dken.centralindia-01.azurewebsites.net/api/chat', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      message: text
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: text, previousResponseId: lastId })
   });
-
   const data = await r.json();
-
-  if (!r.ok) {
-    throw new Error(data.error || 'Backend request failed');
-  }
-
+  if (!r.ok) throw new Error(data.error || 'Backend request failed');
+  lastId = data.id;
   return data.reply;
-                }
+}
 
 async function ask(text){
   text = text.trim(); if (!text) return;
