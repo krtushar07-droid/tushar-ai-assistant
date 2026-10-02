@@ -31,7 +31,7 @@ app.http("chat", {
         },
         {
           body: {
-            agent: {
+            agent_reference: {
               name: process.env.AGENT_NAME,
               type: "agent_reference"
             }
