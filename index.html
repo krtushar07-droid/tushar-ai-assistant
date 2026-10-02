@@ -145,7 +145,7 @@ function addMsg(text, who){
    return (await r.json()).reply;
 */
 async function getReply(text){
-  const r = await fetch('/api/chat', {
+  const r = await fetch('https://tushar-ai-backend.azurewebsites.net/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
