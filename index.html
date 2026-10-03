@@ -5,7 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tushar AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+html,body{max-width:100%;overflow-x:hidden}
+#scroll{overflow-x:hidden}
+.app,.wrap,header,form,.cw,section{min-width:0;max-width:100%}
+header{gap:8px;padding:12px}
+.logo{width:44px;height:44px}
+.brand{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{font-size:12px}
+.ibtn{width:40px;height:40px}
+h1{font-size:clamp(26px,7.5vw,40px)}
+.cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cat{min-width:0;overflow:hidden;padding:12px;gap:10px}
+.cat .ic{width:38px;height:38px;border-radius:12px}
+.cat .chev{display:none}
+.cat .tx b{font-size:14.5px;overflow-wrap:anywhere}
+.cat .tx span{font-size:12px;overflow-wrap:anywhere}
+.sug{min-width:0}
+.sug .tx b{font-size:15px}
+.sug .tx span{font-size:12.5px}
+.grad{display:inline-block;background:linear-gradient(135deg,#7da0ff,#b98aff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+[data-theme=light] .grad{background-image:linear-gradient(135deg,#3b5bff,#8a3dff)}
+@media(min-width:700px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  <style>
 :root{--bg:#050816;--card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--text:#f5f7ff;--muted:#98a2c6;--panel:#0b1030;--glow:.38;--g:linear-gradient(135deg,#4f7bff,#9b5cff)}
 [data-theme=light]{--bg:#f2f4ff;--card:rgba(255,255,255,.85);--card2:#fff;--line:rgba(70,80,160,.15);--text:#10152e;--muted:#5d6791;--panel:#fff;--glow:.2}
 *{box-sizing:border-box;margin:0;padding:0}
