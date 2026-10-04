@@ -239,7 +239,7 @@ let chats=[],current=null,voiceMode=false,picked=[],loaded=false;
 const toBottom=()=>{scroll.scrollTop=scroll.scrollHeight};
 
 async function cloud(method,path,body){
-const r=await fetch('/api/chats'+path,{method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+const r=await fetch('/api/chats'+path,{method:method||'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
 if(!r.ok)throw new Error('cloud '+r.status);
 return r.json();
 }
