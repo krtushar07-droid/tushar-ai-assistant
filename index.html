@@ -718,6 +718,35 @@ if(m){saveScore(m[1].toUpperCase(),Math.min(10,Number(m[2])),10)}
 return d;
 };
 })();
+  /* Practice Lab */
+(function(){
+const box=document.createElement('div');box.id='pracBox';box.style.display='none';
+$('msgs').before(box);
+const o=showHome;showHome=function(on){o(on);box.style.display='none'};
+const TOPICS=['Should AI replace entry-level jobs?','Is work from home better than office?','Are startups better than corporate jobs for freshers?','Should MBA be mandatory for managers?','Is social media good for brands?','Is a gap year before MBA a good idea?','Should companies pay for employee mental health?','Is cashless India good for small shops?','Are influencers more trusted than ads?','Should freshers prefer salary or learning?','Is EV the future of Indian automobiles?','Does a 4-day work week improve productivity?','Is quick commerce good for India?','Should schools teach financial literacy?','Are brand ambassadors worth the money?','Is data privacy more important than personalised ads?','Should companies hire based on skills, not degrees?','Is the gig economy good for workers?','Can sustainability and profit go together?','Should India focus on manufacturing or services?'];
+const EXTOP=['A brand you admire and why','Why customers switch brands','Is failure necessary for success?','The future of online shopping','One lesson from a recent business news story','Should students do internships early?','Is money the best motivator?','How AI will change marketing','Leadership vs management','My biggest strength','The most useful skill for a manager','Why do some startups fail?','An ad that stayed in your mind','Is customer always right?','Teamwork vs individual talent','The role of ethics in business','How to handle pressure at work','Why India is a big market for brands','A product you would improve','Where I see myself in five years'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const GD=()=>'Run a GD practice on the topic: "'+pick(TOPICS)+'" Wait for my points. After I send them, score me out of 10 on content, structure and communication, and tell me how to improve. End that reply with one last line in exactly this format: GD SCORE: 7/10 (use my real score instead of 7). Do not write that line before I have sent my points.';
+const EXT=()=>'Run an extempore practice. The topic is: "'+pick(EXTOP)+'". Show me the topic, then wait. I will speak or type for about one minute. After I reply, score me out of 10 on relevance, fluency and structure. End that reply with one last line in exactly this format: EXT SCORE: 7/10 (use my real score instead of 7). Do not write that line before I have replied.';
+const PI=()=>'Act as a strict placement interviewer. Ask me exactly 8 questions, one at a time. Choose the questions yourself, mixing HR, behavioural, MBA and situational questions, and make them different from any earlier interview (session code '+Math.random().toString(36).slice(2,8)+'). Start with "Tell me about yourself." Wait for each answer before asking the next question. After my eighth answer, give an overall score out of 10 with feedback on each answer. End that reply with one last line in exactly this format: PI SCORE: 7/10 (use my real score instead of 7). Do not write that line before my eighth answer.';
+function mk(p,t,fn){const b=document.createElement('button');b.type='button';b.className='ex';b.style.cssText='width:100%;margin:8px 0;font-size:15px';b.textContent=t;b.onclick=fn;p.appendChild(b)}
+function openPractice(){
+current=null;msgs.innerHTML='';showHome(false);$('form').style.display='none';
+box.style.display='block';scroll.scrollTop=0;box.innerHTML='';
+const d=document.createElement('div');d.className='rd';
+d.innerHTML='<h3>🎯 Practice Lab</h3><small>Pick one. You can type or use the mic.</small>';
+mk(d,'Group Discussion',()=>{voiceMode=false;ask(GD())});
+mk(d,'Extempore',()=>{voiceMode=false;ask(EXT())});
+mk(d,'Personal Interview (8 questions)',()=>{voiceMode=false;ask(PI())});
+box.appendChild(d);
+}
+document.querySelectorAll('[data-go="prac"]').forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go==='prac'));
+openPractice();
+};
+});
+})();
 </script>
 </body>
 </html>
