@@ -1283,6 +1283,45 @@ else if(items[0])im.src=art(t,items[0].title)
 }).catch(()=>{});
 });
 })();
+  (function(){
+const s=document.createElement('style');
+s.textContent='.pn-i{cursor:pointer}.pn-p{margin:10px 0 0;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13.5px;line-height:1.5}.pn-p ul{margin:0;padding-left:18px}.pn-p li{margin:0 0 7px}';
+document.head.appendChild(s);
+const STOP=new Set('a an the and or but if of to in on for with at by from as is are was were be been it its this that these those he she they we you i not no has have had will would can could may might also said says after before over into than then their there which who while about more most such per up out new'.split(' '));
+const cachePts={};
+async function getPoints(link){
+if(cachePts[link])return cachePts[link];
+const r=await fetch('https://r.jina.ai/'+link);
+if(!r.ok)throw new Error('fetch');
+let txt=await r.text();
+txt=txt.replace(/!\[[^\]]*\]\([^)]*\)/g,' ').replace(/\[([^\]]*)\]\([^)]*\)/g,'$1')
+.split('\n').filter(l=>l.trim().split(/\s+/).length>=10&&!/^[#>*\-|]/.test(l.trim())).join(' ');
+const sents=(txt.match(/[^.!?]+[.!?]+(?=\s|$)/g)||[]).map(x=>x.trim()).filter(x=>x.length>40&&x.length<400);
+if(sents.length<3)throw new Error('short');
+const words=x=>(x.toLowerCase().match(/[a-z0-9₹%]+/g)||[]).filter(w=>w.length>2&&!STOP.has(w));
+const f={};sents.forEach(x=>words(x).forEach(w=>f[w]=(f[w]||0)+1));
+const pts=sents.map((x,i)=>{const w=words(x);let sc=w.reduce((a,b)=>a+f[b],0)/Math.sqrt(w.length||1);if(/\d/.test(x))sc*=1.15;if(i<3)sc*=1.2;return{x,i,sc}})
+.sort((a,b)=>b.sc-a.sc).slice(0,7).sort((a,b)=>a.i-b.i).map(o=>o.x);
+cachePts[link]=pts;return pts;
+}
+document.addEventListener('click',async e=>{
+const img=e.target.closest&&e.target.closest('.pn-i');
+if(!img)return;
+const card=img.closest('.pn-c');
+const old=card.querySelector('.pn-p');
+if(old){old.remove();return}
+const link=card.querySelector('.pn-r a').href;
+const p=document.createElement('div');p.className='pn-p';p.textContent='Getting key points...';
+card.insertBefore(p,card.querySelector('.pn-r'));
+try{
+const pts=await getPoints(link);
+p.textContent='';
+const ul=document.createElement('ul');
+pts.forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.appendChild(li)});
+p.appendChild(ul);
+}catch(err){p.textContent='Could not get points for this article. Tap Read to open it.'}
+});
+})();
 </script>
 </body>
 </html>
