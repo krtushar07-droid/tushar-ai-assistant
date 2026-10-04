@@ -590,7 +590,7 @@ else if(k==='quiz'){openQuiz()}else toast('Coming soon')
 /* Home is a dashboard; the chat bar only shows inside a chat */
 (function(){const o=showHome;showHome=function(on){o(on);$('form').style.display=on?'none':''};
 showHome($('home').style.display!=='none');
-$('goGD').onclick=()=>{voiceMode=false;ask('Run a GD practice on the topic: "Should AI replace entry-level jobs?" Wait for my points, then score me out of 10 on content, structure and communication, and tell me how to improve.')};
+$('goGD').onclick=()=>{voiceMode=false;ask('Run a GD practice on the topic: "Should AI replace entry-level jobs?" Wait for my points. After I send them, score me out of 10 on content, structure and communication, and tell me how to improve. End that reply with one last line in exactly this format: GD SCORE: 7/10 (use my real score instead of 7). Do not write that line before I have sent my points.')};
 })();
 
 /* Menu, Ask AI button and New chat button */
@@ -707,6 +707,16 @@ ring.querySelector('b').textContent=o+'%';
 }catch(e){}
 }
 loadReadiness();
+})();
+  /* Auto-save practice scores */
+(function(){
+const g=getReply;
+getReply=async function(t,p,a){
+const d=await g(t,p,a);
+const m=/\b(GD|EXT|PI)\s+SCORE:\s*(\d+(?:\.\d+)?)\s*\/\s*10/i.exec(d.reply||'');
+if(m){saveScore(m[1].toUpperCase(),Math.min(10,Number(m[2])),10)}
+return d;
+};
 })();
 </script>
 </body>
