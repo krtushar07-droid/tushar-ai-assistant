@@ -1,0 +1,150 @@
+{
+  "items": [
+    {
+      "id": "gd-250",
+      "cat": "Interview Prep",
+      "title": "250 GD Topics",
+      "tag": "GD",
+      "time": "PDF",
+      "summary": "A big list of group discussion topics to practise.",
+      "file": "/250-gd-topics.PDF",
+      "body": "Pick 3 topics a day. Speak for 2 minutes on each, then ask Tushar AI to score you in Practice Lab."
+    },
+    {
+      "id": "gd-50-detail",
+      "cat": "Interview Prep",
+      "title": "50 GD Topics with Detail",
+      "tag": "GD",
+      "time": "Word",
+      "summary": "50 topics with detailed points.",
+      "file": "/50-gd-topics-detail.docx",
+      "body": "Read the points first, then practise your own opening and conclusion. The file downloads to your phone."
+    },
+    {
+      "id": "cs-amul",
+      "cat": "Case Studies",
+      "title": "Amul: a brand built on a cooperative",
+      "tag": "Marketing",
+      "time": "4 min",
+      "summary": "How a farmer cooperative competed with multinationals and won on trust and price.",
+      "body": "**Background**\nAmul grew out of the dairy cooperative movement in Anand, Gujarat. Farmers owned the business, so milk was collected, processed and sold without a layer of middlemen.\n\n**What worked**\n- Value pricing: affordable products for mass households.\n- One umbrella brand across butter, milk, cheese and ice cream.\n- The Amul girl hoardings, running since 1966, comment on current events every few weeks. The ads cost little and stay in public memory.\n\n**Lessons**\n- Distribution and trust can be a stronger moat than ad budgets.\n- Consistency of a single creative idea compounds over decades.\n\n**Discuss**\n1. What risks come with topical advertising?\n2. How would you extend Amul into a premium segment without hurting the core brand?\n3. Is a cooperative structure a strength or a limit when scaling?"
+    },
+    {
+      "id": "cs-nano",
+      "cat": "Case Studies",
+      "title": "Tata Nano: when positioning backfires",
+      "tag": "Marketing",
+      "time": "4 min",
+      "summary": "A very low-priced car that struggled because of how it was perceived.",
+      "body": "**Background**\nLaunched in 2008, the Nano was pitched as an affordable car for families moving up from two-wheelers, with a headline price of around one lakh rupees.\n\n**What went wrong**\n- The 'cheapest car' label made buyers feel it signalled low status.\n- Aspirational buyers wanted a car that showed they had progressed, not one that showed they had saved.\n- Early publicity about quality and safety concerns hurt trust.\n\n**Lessons**\n- Price is part of positioning, not the whole of it.\n- Customers buy identity as well as function.\n\n**Discuss**\n1. How would you reposition the Nano today?\n2. Which segment should it have targeted first?\n3. Compare with a brand that made 'value' feel aspirational."
+    },
+    {
+      "id": "cs-kodak",
+      "cat": "Case Studies",
+      "title": "Kodak: the cost of ignoring disruption",
+      "tag": "Strategy",
+      "time": "4 min",
+      "summary": "An early digital camera inventor that protected its film business too long.",
+      "body": "**Background**\nKodak engineers built an early digital camera in 1975. The company dominated film and the profitable chemicals and paper that went with it.\n\n**What went wrong**\n- Digital threatened the core business, so leadership held back.\n- Rivals and phones moved the market while Kodak stayed attached to film margins.\n- Kodak filed for bankruptcy protection in 2012.\n\n**Lessons**\n- Cannibalise yourself before someone else does.\n- Define the business by the customer need (preserving memories), not the product (film).\n\n**Discuss**\n1. Which framework explains this best: Ansoff, BCG, or disruptive innovation?\n2. What would you have done in 2000?"
+    },
+    {
+      "id": "cs-qc",
+      "cat": "Case Studies",
+      "title": "Quick commerce: is it sustainable?",
+      "tag": "Current Affairs",
+      "time": "5 min",
+      "summary": "A discussion case on 10-minute delivery, unit economics and urban demand.",
+      "body": "**Context**\nQuick commerce platforms promise delivery in minutes using small local warehouses (dark stores) in dense neighbourhoods.\n\n**Questions to think about**\n- Unit economics: delivery cost, order value, discounts and warehouse rent.\n- Where does profit come from: higher basket size, advertising from brands, private labels, or fees?\n- Customer behaviour: convenience for top-up purchases versus planned grocery shopping.\n- Gig workers: safety, pay and regulation.\n\n**Frameworks to use**\nPorter's Five Forces, a simple unit economics table, and a SWOT of one platform.\n\n**Discuss**\n1. Will this model work outside the top cities?\n2. Who wins if competition continues: platforms, brands or customers?\n\nTip: use recent news to update your facts before a GD or interview."
+    },
+    {
+      "id": "jd-mkt",
+      "cat": "Job Descriptions",
+      "title": "Marketing Management Trainee (sample)",
+      "tag": "Marketing",
+      "time": "3 min",
+      "summary": "Typical FMCG or consumer brand trainee role. Use it to practise CV tailoring.",
+      "body": "**Role**\nSupport the brand team with campaign planning, consumer research and sales coordination.\n\n**Responsibilities**\n- Assist in preparing brand plans and monthly performance reviews.\n- Analyse market share, pricing and competitor activity.\n- Coordinate with agencies and the sales team on launches.\n- Present insights to category managers.\n\n**Skills they look for**\nAnalytical thinking, communication, Excel, curiosity about consumers, ownership.\n\n**Keywords for your CV**\nconsumer insight, market share, campaign, A/B test, go-to-market, brand positioning.\n\n**Try this**\nPaste your CV into CV Lab with this JD for a tailored score."
+    },
+    {
+      "id": "jd-ba",
+      "cat": "Job Descriptions",
+      "title": "Business Analyst (sample)",
+      "tag": "Analytics",
+      "time": "3 min",
+      "summary": "A common consulting or tech role built around structured problem solving.",
+      "body": "**Role**\nWork with clients and internal teams to define problems, analyse data and recommend actions.\n\n**Responsibilities**\n- Gather requirements and map business processes.\n- Build dashboards and reports in Excel, SQL or BI tools.\n- Prepare slides summarising findings for stakeholders.\n- Track KPIs and flag risks.\n\n**Skills they look for**\nStructured thinking, Excel, basic SQL, storytelling with data, stakeholder management.\n\n**Keywords for your CV**\nKPI, process improvement, dashboard, requirement gathering, cost reduction, stakeholder.\n\n**Try this**\nRewrite two CV bullets with numbers: 'Improved X by Y% by doing Z.'"
+    },
+    {
+      "id": "jd-sales",
+      "cat": "Job Descriptions",
+      "title": "Sales Management Trainee (sample)",
+      "tag": "Sales",
+      "time": "3 min",
+      "summary": "Field-and-office sales role with targets, distributors and key accounts.",
+      "body": "**Role**\nOwn sales targets for a region or key accounts and grow distribution.\n\n**Responsibilities**\n- Plan monthly sales targets and track achievement.\n- Manage distributors, retailers or key accounts.\n- Run trade promotions and monitor stock.\n- Report market feedback to the marketing team.\n\n**Skills they look for**\nNegotiation, resilience, communication, comfort with travel and targets.\n\n**Keywords for your CV**\ntarget achievement, distribution, channel, negotiation, key account, trade promotion.\n\n**Try this**\nPrepare a story where you hit a hard target using the STAR method."
+    },
+    {
+      "id": "ip-tmay",
+      "cat": "Interview Prep",
+      "title": "Tell me about yourself: a simple structure",
+      "tag": "HR",
+      "time": "3 min",
+      "summary": "Use Present, Past, Future in about 90 seconds.",
+      "body": "**Structure**\n1. Present: who you are now (MBA student, specialisation, one headline strength).\n2. Past: two or three experiences that built that strength (work, projects, leadership).\n3. Future: what you want next and why this role or company fits.\n\n**Tips**\n- Keep it under 90 seconds.\n- End with a hook the interviewer can ask about.\n- Avoid reciting your CV line by line.\n- Practise out loud and record yourself.\n\n**Try this**\nOpen Practice Lab, start a Personal Interview and answer the first question using this structure."
+    },
+    {
+      "id": "ip-star",
+      "cat": "Interview Prep",
+      "title": "STAR method for behavioural questions",
+      "tag": "Behavioural",
+      "time": "3 min",
+      "summary": "Answer 'tell me about a time when...' clearly and with results.",
+      "body": "**STAR**\n- Situation: set the scene in one or two sentences.\n- Task: what was your responsibility?\n- Action: what you did, step by step (use 'I', not 'we').\n- Result: the outcome with a number if possible, and what you learned.\n\n**Stories to prepare**\nLeadership, conflict in a team, failure, tight deadline, persuading someone, taking initiative.\n\n**Common mistake**\nSpending 80% on the situation and rushing the result. Aim for 20% setup, 50% action, 30% result."
+    },
+    {
+      "id": "ip-why",
+      "cat": "Interview Prep",
+      "title": "Why MBA? Why this company? Weaknesses",
+      "tag": "HR",
+      "time": "4 min",
+      "summary": "Honest, specific answers to the three questions almost everyone gets.",
+      "body": "**Why MBA**\nLink a specific gap (for example, finance or strategy skills) to a specific goal. Avoid 'for growth' or 'for a better salary'.\n\n**Why this company**\nName one product, one recent initiative and one value that matches you. Show you did the research.\n\n**Your weakness**\nPick a real but fixable weakness, show what you are doing about it, and show progress. Do not pick a disguised strength like 'I work too hard'.\n\n**Try this**\nWrite each answer in three sentences, then say it aloud in 30 seconds."
+    },
+    {
+      "id": "mba-4p",
+      "cat": "MBA Notes",
+      "title": "STP and the 4Ps",
+      "tag": "Marketing",
+      "time": "3 min",
+      "summary": "The base framework for almost any marketing question.",
+      "body": "**STP**\n- Segmentation: divide the market by demographics, behaviour, needs or geography.\n- Targeting: choose the segment(s) with the best fit and potential.\n- Positioning: the place your brand holds in the customer's mind.\n\n**4Ps**\n- Product: features, quality, brand, packaging.\n- Price: pricing strategy, discounts, value perception.\n- Place: channels and distribution.\n- Promotion: advertising, PR, digital, sales promotion.\n\n**Use it**\nStart with STP, then design the 4Ps to support the positioning. Mention extended Ps (people, process, physical evidence) for services."
+    },
+    {
+      "id": "mba-5f",
+      "cat": "MBA Notes",
+      "title": "Porter's Five Forces",
+      "tag": "Strategy",
+      "time": "3 min",
+      "summary": "A quick way to judge how attractive an industry is.",
+      "body": "**The five forces**\n1. Threat of new entrants: barriers like capital, brand, regulation.\n2. Bargaining power of suppliers.\n3. Bargaining power of buyers.\n4. Threat of substitutes.\n5. Rivalry among existing competitors.\n\n**How to use it**\nRate each force high, medium or low with one reason, then conclude whether the industry is attractive and what a firm should do.\n\n**Example prompt**\nApply the five forces to Indian quick commerce or electric two-wheelers."
+    },
+    {
+      "id": "mba-bcg",
+      "cat": "MBA Notes",
+      "title": "BCG matrix",
+      "tag": "Strategy",
+      "time": "2 min",
+      "summary": "Classify products by market growth and market share.",
+      "body": "**Quadrants**\n- Stars: high growth, high share. Invest to keep leadership.\n- Cash cows: low growth, high share. Harvest the cash.\n- Question marks: high growth, low share. Invest selectively or exit.\n- Dogs: low growth, low share. Fix or divest.\n\n**Limits**\nMarket share and growth are not the only drivers of success. Definitions of 'market' can change the result.\n\n**Try this**\nPlace three products from one company (for example, a consumer goods firm) on the matrix and justify each."
+    },
+    {
+      "id": "mba-ansoff",
+      "cat": "MBA Notes",
+      "title": "Ansoff matrix",
+      "tag": "Strategy",
+      "time": "2 min",
+      "summary": "Four growth routes by combining products and markets.",
+      "body": "**Growth routes**\n- Market penetration: existing products, existing markets (lowest risk).\n- Market development: existing products, new markets.\n- Product development: new products, existing markets.\n- Diversification: new products, new markets (highest risk).\n\n**Use it**\nRecommend the lowest-risk route that meets the growth target, and say what would justify moving to a riskier one.\n\n**Try this**\nChoose a brand you know and give one example of each route."
+    }
+  ]
+}
