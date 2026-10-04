@@ -649,6 +649,7 @@ bs.push({b,k:op.k});
 }
 function finish(){
 const pct=Math.round(score/qs.length*100);
+saveScore('Quiz: '+s,score,qs.length);
 const d=card2();
 el(d,'h3','Your result');
 const big=el(d,'div',score+' / '+qs.length+'  ('+pct+'%)');big.style.cssText='font-size:30px;font-weight:800;margin:12px 0';
@@ -658,6 +659,54 @@ btn(d,'Back to subjects',menu);
 }
 show();
 }
+})();
+  /* Readiness scores */
+(function(){
+const AREAS=['cv','gd','ext','pi','quiz','ca'];
+function areaOf(s){
+s=String(s).toLowerCase();
+if(s.startsWith('quiz'))return 'quiz';
+if(s.startsWith('gd'))return 'gd';
+if(s.startsWith('ext'))return 'ext';
+if(s.startsWith('pi'))return 'pi';
+if(s.startsWith('cv'))return 'cv';
+if(s.startsWith('ca'))return 'ca';
+return null;
+}
+window.saveScore=function(subject,score,total){
+fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({subject:subject,score:score,total:total})})
+.then(loadReadiness).catch(()=>{});
+};
+async function loadReadiness(){
+try{
+const r=await fetch('/api/scores');
+if(!r.ok)return;
+const rows=await r.json();
+const sum={},cnt={};
+rows.forEach(x=>{
+const a=areaOf(x.subject);
+if(!a||!(x.total>0))return;
+sum[a]=(sum[a]||0)+x.score/x.total*100;
+cnt[a]=(cnt[a]||0)+1;
+});
+const bars=document.querySelectorAll('.rbs .rb');
+let tot=0,n=0;
+AREAS.forEach((a,i)=>{
+const p=cnt[a]?Math.round(sum[a]/cnt[a]):0;
+if(cnt[a]){tot+=p;n++}
+if(bars[i]){
+bars[i].querySelector('u').style.width=p+'%';
+bars[i].querySelector('em').textContent=p+'%';
+}
+});
+const o=n?Math.round(tot/n):0;
+const ring=document.querySelector('.ring');
+ring.style.background='conic-gradient(#34d399,#3b82f6 '+o+'%,var(--line) 0)';
+ring.querySelector('b').textContent=o+'%';
+}catch(e){}
+}
+loadReadiness();
 })();
 </script>
 </body>
