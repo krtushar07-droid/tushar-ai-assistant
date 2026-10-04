@@ -1115,6 +1115,102 @@ t=t.replace(/topic: "[^"]*"/,'topic: "'+pick+'"');
 return prev(t);
 };
 })();
+  (function(){
+const box=document.createElement('div');box.id='pulseBox';box.style.display='none';
+$('msgs').before(box);
+const st=document.createElement('style');
+st.textContent='#pulseBox{padding-bottom:24px}'
++'.pn-c{display:block;margin-top:10px;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--card2)}'
++'.pn-c b{display:block;font-size:15.5px;line-height:1.35;margin:4px 0 6px;overflow-wrap:anywhere}'
++'.pn-m{font-size:12.5px;color:var(--muted)}'
++'.pn-i{width:100%;height:150px;border-radius:12px;object-fit:cover;display:block;margin-bottom:10px;background:linear-gradient(135deg,#dfe6ff,#f0e6ff)}'
++'.pn-i.ph{display:grid;place-items:center;font-size:38px}'
++'.pn-r{display:flex;gap:8px;margin-top:10px}'
++'.pn-r a,.pn-r button{flex:1;text-align:center;text-decoration:none;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:14px;font-weight:600}'
++'.pn-r button{background:var(--g);color:#fff;border:0}'
++'.pn-h{padding:14px 2px;font-size:13.5px;color:var(--muted)}';
+document.head.appendChild(st);
+
+const o=showHome;showHome=function(on){o(on);box.style.display='none'};
+const TOPICS=['Automobile','E-commerce','Finance','Marketing','FMCG','Technology','Startups','Economy'];
+let topic='Automobile';
+const cache={};
+
+function el(p,tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;p.appendChild(e);return e}
+function ago(iso){
+if(!iso)return '';
+const m=Math.round((Date.now()-new Date(iso).getTime())/60000);
+if(m<60)return Math.max(m,1)+' min ago';
+if(m<1440)return Math.round(m/60)+' h ago';
+return Math.round(m/1440)+' d ago';
+}
+async function news(t){
+if(cache[t]&&Date.now()-cache[t].at<10*60*1000)return cache[t].items;
+const r=await fetch('/api/news?topic='+encodeURIComponent(t));
+if(!r.ok)throw new Error('news '+r.status);
+const j=await r.json();
+cache[t]={at:Date.now(),items:j.items||[]};
+return cache[t].items;
+}
+
+function openPulse(t){
+if(t)topic=t;
+current=null;msgs.innerHTML='';showHome(false);$('form').style.display='none';
+drawer.classList.remove('open');scrim.classList.remove('open');
+box.style.display='block';scroll.scrollTop=0;
+render();
+}
+async function render(){
+box.innerHTML='';
+const d=el(box,'div','','rd');
+el(d,'h3','📈 Industry Pulse');
+el(d,'small','Latest business headlines from the last 3 days.');
+const tabs=el(d,'div','','tabs');tabs.style.marginTop='10px';
+TOPICS.forEach(t=>{const b=el(tabs,'button',t,'tb'+(t===topic?' on':''));b.type='button';b.onclick=()=>{topic=t;render()}});
+const out=el(d,'div');
+el(out,'div','Loading headlines...','pn-h');
+try{
+const items=await news(topic);
+out.innerHTML='';
+if(!items.length){el(out,'div','No headlines found right now. Try another topic.','pn-h');return}
+items.forEach(x=>{
+const c=el(out,'div','','pn-c');
+if(x.image){const im=el(c,'img','','pn-i');im.loading='lazy';im.alt='';im.referrerPolicy='no-referrer';im.src=x.image;im.onerror=()=>im.remove()}
+el(c,'span',x.source+(x.date?' · '+ago(x.date):''),'pn-m');
+el(c,'b',x.title);
+const row=el(c,'div','','pn-r');
+const a=el(row,'a','Read');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';
+const b=el(row,'button','Explain with AI');b.type='button';
+b.onclick=()=>{voiceMode=false;ask('Industry news: '+x.title+(x.source?' ('+x.source+')':'')+'. Act as my MBA placement coach. Based on this headline, explain the background in simple words, why it matters for the industry, and give me 2 questions an interviewer or GD panel might ask about it. If you are not sure about any detail, say so instead of guessing.')};
+});
+}catch(e){
+out.innerHTML='';
+el(out,'div','Could not load news. Check your connection and try again.','pn-h');
+const b=el(out,'button','Try again','tb');b.type='button';b.onclick=render;
+}
+}
+
+/* Open from every "Industry Pulse" button */
+document.addEventListener('click',e=>{
+const b=e.target.closest&&e.target.closest('[data-go="pulse"]');if(!b)return;
+e.stopImmediatePropagation();e.preventDefault();
+document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go==='pulse'));
+openPulse();
+},true);
+
+/* Home cards: show the latest headline for each topic */
+document.querySelectorAll('.pl .pc').forEach(c=>{
+const t=(c.querySelector('.chip')||{}).textContent;
+if(!TOPICS.includes(t))return;
+c.style.cursor='pointer';
+c.onclick=()=>openPulse(t);
+news(t).then(items=>{
+if(items[0])c.querySelector('p').textContent=items[0].title;
+const withImg=items.find(i=>i.image);
+if(withImg){const pi=c.querySelector('.pi');pi.style.background='url("'+withImg.image+'") center/cover no-repeat'}
+}).catch(()=>{});
+});
+})();
 </script>
 </body>
 </html>
