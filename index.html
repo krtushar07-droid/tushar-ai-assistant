@@ -1307,15 +1307,26 @@ msgs.appendChild(n);toBottom();
 new MutationObserver(update).observe(msgs,{childList:true,subtree:true});
 })();
   if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
-  (function(){
+  /* Message popup: tap a message for Copy / Edit / Regenerate */
+(function(){
 const st=document.createElement('style');
-st.textContent='.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}'
-+'.acts button{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}'
-+'.acts button:active{opacity:.6}';
+st.textContent='#msgMenu{position:fixed;z-index:40;display:none;gap:2px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.28)}'
++'#msgMenu button{padding:10px 14px;border-radius:10px;font-size:14.5px;font-weight:600;color:var(--text);white-space:nowrap}'
++'#msgMenu button:active{background:var(--card2)}'
++'.bubble.editing{width:min(82%,640px)}'
++'.edt{display:block;width:100%;min-height:96px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.16);color:#fff;font:inherit;font-size:15px;resize:vertical;outline:0}'
++'.edb{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}'
++'.edb button{padding:8px 16px;border-radius:999px;font:inherit;font-size:13.5px;font-weight:700;border:1px solid rgba(255,255,255,.55);color:#fff}'
++'.edb button.go2{background:#fff;color:#4f5bff;border-color:#fff}';
 document.head.appendChild(st);
 
-const recs={};
+const T={};let seq=0;let pendingCtx='';
 const SKIPCOPY=/^(Something went wrong|Could not load this chat|You have reached)/;
+const menu=document.createElement('div');menu.id='msgMenu';document.body.appendChild(menu);
+let menuFor=null;
+
+function closeMenu(){menu.style.display='none';menu.innerHTML='';menuFor=null}
+function say(t){if(typeof toast==='function')toast(t)}
 
 async function copyText(s){
 try{await navigator.clipboard.writeText(s);return true}
@@ -1328,80 +1339,167 @@ const ok=document.execCommand('copy');ta.remove();return ok;
 }catch(e2){return false}
 }
 }
+async function doCopy(s){say((await copyText(s))?'Copied':'Could not copy')}
 
-function regen(){
-const c=current;
-if(!c||send.disabled)return;
-const rec=recs[c.id];
-if(!rec)return;
-c.messages.length=Math.max(0,rec.n-(rec.ok?2:1));
-c.lastId=rec.prevId;
-const rows=msgs.querySelectorAll('.row');
-for(let i=1;i<=2;i++){const r=rows[rows.length-i];if(r)r.remove()}
-voiceMode=false;
-ask(rec.text);
+function transcript(list){
+let s='';
+list.forEach(m=>{s+=(m.who==='user'?'User: ':'Assistant: ')+String(m.text).slice(0,700)+'\n\n'});
+return s.slice(-6000);
 }
 
-const mo=new MutationObserver(()=>update());
-
-function update(){
-mo.disconnect();
-try{
+function locate(row){
+const c=current;
+if(!c||!row||!row.classList.contains('user'))return null;
+const id=row.dataset.turn;
+if(id){
+const T0=T[id];
+if(T0&&T0.chat===c.id&&!T0.files)return {mode:'chain',T0:T0,text:T0.text};
+return null;
+}
 const rows=[...msgs.querySelectorAll('.row')];
-const lastRow=rows[rows.length-1];
-const c=current;
-const rec=c&&recs[c.id];
-const canRegen=!!rec&&c.messages.length===rec.n&&!send.disabled;
-rows.forEach(r=>{
-if(!r.classList.contains('bot'))return;
-const b=r.querySelector('.bubble'),t=r.querySelector('.txt');
-if(!b||!t)return;
-const txt=t.textContent.trim();
-const done=!t.querySelector('.dots')&&txt.length>0&&txt!=='Loading chat...';
-let acts=b.querySelector('.acts');
-if(!done){if(acts)acts.remove();return}
-if(!acts){acts=document.createElement('div');acts.className='acts';b.appendChild(acts)}
-let cp=acts.querySelector('.cpy');
-if(!SKIPCOPY.test(txt)&&!cp){
-cp=document.createElement('button');cp.type='button';cp.className='cpy';cp.textContent='Copy';
-cp.onclick=async()=>{
-const ok=await copyText(t.textContent.trim());
-cp.textContent=ok?'Copied ✓':'Could not copy';
-setTimeout(()=>{cp.textContent='Copy'},1500);
-};
-acts.insertBefore(cp,acts.firstChild);
-}
-let rg=acts.querySelector('.rgn');
-const want=(r===lastRow)&&canRegen;
-if(want&&!rg){
-rg=document.createElement('button');rg.type='button';rg.className='rgn';rg.textContent='Regenerate';
-rg.onclick=regen;acts.appendChild(rg);
-}else if(!want&&rg){rg.remove()}
-});
-}finally{
-mo.observe(msgs,{childList:true,subtree:true});
-}
+const k=rows.indexOf(row);
+const m=c.messages[k];
+const shown=(row.querySelector('.txt')||{textContent:''}).textContent.trim();
+if(m&&m.who==='user'&&String(m.text).indexOf('\n📎 ')<0&&String(m.text).trim()===shown)return {mode:'hist',k:k,text:String(m.text)};
+return null;
 }
 
+function redo(row,loc,newText){
+const c=current;
+if(!c||send.disabled||!loc)return;
+const rows=[...msgs.querySelectorAll('.row')];
+const k=rows.indexOf(row);
+if(k<0)return;
+let idx;
+if(loc.mode==='chain'){
+idx=loc.T0.i;
+pendingCtx=loc.T0.ctx||'';
+c.messages.length=idx;
+c.lastId=loc.T0.prevId;
+}else{
+idx=loc.k;
+pendingCtx=transcript(c.messages.slice(0,idx));
+c.messages.length=idx;
+c.lastId=null;
+}
+Object.keys(T).forEach(id=>{if(T[id].chat===c.id&&T[id].i>=idx)delete T[id]});
+rows.slice(k).forEach(r=>r.remove());
+if(idx===0){
+c.title=String(newText).trim().slice(0,40);
+const m=chats.find(x=>x.id===c.id);
+if(m)m.title=c.title;
+}
+voiceMode=false;
+ask(newText);
+}
+
+function startEdit(row,loc){
+const b=row.querySelector('.bubble'),t=b.querySelector('.txt');
+const ta=document.createElement('textarea');ta.className='edt';ta.value=t.textContent;
+const bar=document.createElement('div');bar.className='edb';
+const cx=document.createElement('button');cx.type='button';cx.textContent='Cancel';
+const ok=document.createElement('button');ok.type='button';ok.className='go2';ok.textContent='Send';
+function stop(){ta.remove();bar.remove();t.style.display='';b.classList.remove('editing')}
+cx.onclick=stop;
+ok.onclick=()=>{
+const v=ta.value.trim();
+stop();
+if(v)redo(row,loc,v);
+};
+bar.append(cx,ok);
+b.classList.add('editing');
+t.style.display='none';
+b.insertBefore(ta,t);
+b.insertBefore(bar,t);
+setTimeout(()=>{ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length)},50);
+}
+
+function openMenu(b,items){
+menu.innerHTML='';
+items.forEach(it=>{
+const x=document.createElement('button');x.type='button';x.textContent=it[0];
+x.onclick=ev=>{ev.stopPropagation();closeMenu();it[1]()};
+menu.appendChild(x);
+});
+menu.style.display='flex';menuFor=b;
+const r=b.getBoundingClientRect(),w=menu.offsetWidth,h=menu.offsetHeight;
+let top=r.bottom+8;
+if(top+h>innerHeight-80)top=r.top-h-8;
+top=Math.min(Math.max(top,70),innerHeight-h-80);
+let left=b.closest('.row').classList.contains('user')?r.right-w:r.left;
+left=Math.min(Math.max(left,8),innerWidth-w-8);
+menu.style.top=top+'px';menu.style.left=left+'px';
+}
+
+function showFor(b){
+if(b.classList.contains('editing'))return;
+if(menuFor===b){closeMenu();return}
+const row=b.closest('.row'),t=b.querySelector('.txt');
+if(!row||!t)return;
+const txt=t.textContent.trim();
+const items=[];
+if(row.classList.contains('bot')){
+if(t.querySelector('.dots')||!txt||txt==='Loading chat...')return;
+if(!SKIPCOPY.test(txt))items.push(['Copy',()=>doCopy(txt)]);
+const rows=[...msgs.querySelectorAll('.row')];
+const k=rows.indexOf(row);
+const ur=k>0?rows[k-1]:null;
+const loc=k===rows.length-1&&!send.disabled?locate(ur):null;
+if(loc)items.push(['Regenerate',()=>redo(ur,loc,loc.text)]);
+}else{
+items.push(['Copy',()=>doCopy(txt)]);
+const loc=!send.disabled?locate(row):null;
+if(loc)items.push(['Edit',()=>startEdit(row,loc)]);
+}
+if(items.length)openMenu(b,items);
+}
+
+msgs.addEventListener('click',e=>{
+const b=e.target.closest('.bubble');
+if(!b||e.target.closest('textarea,button,a'))return;
+if(String(getSelection()).trim())return;
+showFor(b);
+});
+
+document.addEventListener('click',e=>{
+if(!e.target.closest('#msgMenu')&&!e.target.closest('#msgs .bubble'))closeMenu();
+});
+scroll.addEventListener('scroll',closeMenu,{passive:true});
+
+/* Give the AI earlier context once, when a message is re-asked in an old chat */
+const gr=getReply;
+getReply=async function(t,p,a){
+if(pendingCtx){
+const x=pendingCtx;pendingCtx='';
+t='[Earlier conversation, for context only]\n'+x+'\n[New message from the user]\n'+t;
+}
+return gr(t,p,a);
+};
+
+/* Remember each turn so it can be edited or regenerated */
 const prev=ask;
 ask=function(t){
 const txt=typeof t==='string'?t.trim():'';
 const c0=current;
 const prevId=c0?c0.lastId:null;
+const idx0=c0?c0.messages.length:0;
 const hadFiles=picked.length>0;
+const ctx0=pendingCtx;
 const p=prev(t);
 const c=current;
-if(txt&&!hadFiles&&c){
+if(txt&&c){
 Promise.resolve(p).then(()=>{
-const last=c.messages[c.messages.length-1];
-recs[c.id]={text:t,prevId:prevId,n:c.messages.length,ok:!!last&&last.who==='bot'};
-update();
+if(current!==c)return;
+const rows=msgs.querySelectorAll('.row');
+const ur=rows[rows.length-2];
+if(!ur||!ur.classList.contains('user'))return;
+const id='t'+(++seq);
+T[id]={chat:c.id,i:idx0,text:t,prevId:prevId,files:hadFiles,ctx:ctx0};
+ur.dataset.turn=id;
 });
 }
 return p;
 };
-
-update();
 })();
 </script>
 </body>
