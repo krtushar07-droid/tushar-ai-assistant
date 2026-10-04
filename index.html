@@ -583,7 +583,7 @@ document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.data
 if(k==='home'){$('newChat').click()}
 else if(k==='prac'){$('newChat').click();setTimeout(()=>$('cats').scrollIntoView({behavior:'smooth'}),150)}
 else if(k==='ask'){showHome(false);input.focus()}
-else if(k==='cv'){voiceMode=false;ask('Review my CV for placements. Tell me what to attach, then give an ATS-style score out of 100, my top strengths, and the 5 most important fixes.')}
+else if(k==='cv'){voiceMode=false;ask('Act as a strict MBA placement recruiter and CV reviewer. Step 1: ask me to paste the Job Description (JD) as text, or type SKIP for a generic review, then wait. Step 2: ask me to attach my CV as a PDF using the + button, then wait. Do not score anything until a CV is attached. If I typed SKIP, use MODE A and say it is a generic CV review. If I pasted a JD, use MODE B. Follow your CV REVIEW RULES. Show the marks for each area, my top 3 strengths, the 5 most important fixes, and 2 rewritten bullet points. If the attachment is not a CV, say so and give no score. End that reply with one last line in exactly this format: CV SCORE: 70/100 (use my real score instead of 70).')}
 else if(k==='quiz'){openQuiz()}else toast('Coming soon')
 });
 
@@ -713,8 +713,11 @@ loadReadiness();
 const g=getReply;
 getReply=async function(t,p,a){
 const d=await g(t,p,a);
-const m=/\b(GD|EXT|PI)\s+SCORE:\s*(\d+(?:\.\d+)?)\s*\/\s*10/i.exec(d.reply||'');
+const r=d.reply||'';
+const m=/\b(GD|EXT|PI)\s+SCORE:\s*(\d+(?:\.\d+)?)\s*\/\s*10\b/i.exec(r);
 if(m){saveScore(m[1].toUpperCase(),Math.min(10,Number(m[2])),10)}
+const c=/\bCV\s+SCORE:\s*(\d+(?:\.\d+)?)\s*\/\s*100\b/i.exec(r);
+if(c){saveScore('CV',Math.min(100,Number(c[1])),100)}
 return d;
 };
 })();
