@@ -479,10 +479,11 @@ document.addEventListener('click',e=>{if(!pop.contains(e.target))pop.classList.r
 async function getReply(text,prevId,atts){
 const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
 body:JSON.stringify({message:text,previousResponseId:prevId,attachments:atts})});
-const data=await r.json();
+const data=await r.json().catch(()=>({}));
+if(r.status===429)throw new Error('LIMIT');
 if(!r.ok)throw new Error(data.error||'Backend request failed');
 return data;
-}
+  }
 function speak(t){
 if(!('speechSynthesis' in window))return;
 speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(t));
@@ -511,7 +512,7 @@ try{
 const d=await getReply(sent,c.lastId,atts);
 c.lastId=d.id;reply=d.reply;ok=true;
 c.messages.push({who:'bot',text:reply,time:now()});
-}catch(e){reply='Something went wrong. Check your connection and try again.'}
+}catch(e){reply=e.message==='LIMIT'?'You have reached today\'s message limit. Please try again tomorrow.':'Something went wrong. Check your connection and try again.'}
 if(current===c)setBot(pending,reply);
 if(ok&&voiceMode)speak(reply);
 const meta=chats.find(x=>x.id===c.id);
