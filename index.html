@@ -424,6 +424,38 @@ try{rec.start()}catch(e){mic.classList.remove('on')}
 renderHistory();
 try{localStorage.setItem('tushar_migrated','1')}catch(e){}
 loadList();
+  /* Load editable content */
+(async()=>{
+try{
+const r=await fetch('/api/content');
+if(!r.ok)return;
+const c=await r.json();
+const ICONS=['target','doc','brief','mail','bulb','cap','pen','code','globe','chart'];
+if(c.words&&c.words.length){
+WORDS.length=0;c.words.forEach(w=>WORDS.push(w));
+if(!uname)$('word').textContent=WORDS[Math.floor(Math.random()*WORDS.length)];
+}
+if(c.cards&&c.cards.length){
+const old=CATS.slice();
+const COLS=['#4d7bff','#a98bff','#2dd4a0','#ffb23f'];
+$('cats').innerHTML='';
+c.cards.forEach((x,i)=>{
+const it={t:x.title,d:x.desc||'',i:(old[i]&&old[i].i)||ICONS[i%ICONS.length]};
+const col=(old[i]&&old[i].c)||COLS[i%COLS.length];
+$('cats').appendChild(card('cat',it,col,x.prompt||('Help me with '+x.title.toLowerCase()+'.')));
+});
+}
+if(c.suggestions&&c.suggestions.length){
+const old=SUGS.slice();
+SUGS.length=0;
+c.suggestions.forEach((t,i)=>{
+const m=old.find(o=>o.t===t);
+SUGS.push({t:t,d:m?m.d:'',i:m?m.i:ICONS[i%ICONS.length]});
+});
+renderSugs();
+}
+}catch(e){}
+})();
 </script>
 </body>
 </html>
