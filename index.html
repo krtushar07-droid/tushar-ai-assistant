@@ -111,6 +111,8 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 .hist span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .del{padding:10px;color:var(--muted);font-size:20px}
 .empty{color:var(--muted);padding:10px;font-size:14px}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.foot a{color:#8b8bff;text-decoration:none;font-weight:600}
 @media(min-width:700px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}.cat{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
@@ -161,6 +163,7 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <button class="new" id="newChat"><span data-ic="plus" style="display:flex"></span>New Chat</button>
 <input id="q" type="search" placeholder="Search chats..." aria-label="Search chats">
 <div id="history"></div>
+<div class="foot"><span id="who">Signed in</span><a href="/logout">Log out</a></div>
 </aside>
 <script>
 const API='/api/chat';
@@ -191,6 +194,7 @@ if(n===null)return;uname=n.trim().slice(0,20);
 try{localStorage.setItem('tushar_name',uname)}catch(e){}greet();
 };
 greet();
+fetch('/.auth/me').then(r=>r.json()).then(d=>{const u=d.clientPrincipal&&d.clientPrincipal.userDetails;if(u)$('who').textContent=u}).catch(()=>{});
 
 /* Cards & suggestions */
 const CATS=[
@@ -226,15 +230,36 @@ $('allBtn').firstChild.textContent=showAll?'Show less ':'See all ';
 $('allBtn').onclick=()=>{showAll=!showAll;renderSugs()};
 renderSugs();
 
-/* Chats */
+/* Chats (saved in the cloud) */
 const msgs=$('msgs'),scroll=$('scroll'),input=$('input'),send=$('send'),mic=$('mic'),tray=$('tray'),pop=$('pop'),
 drawer=$('drawer'),scrim=$('scrim'),hist=$('history');
 const now=()=>new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
 const fmt=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>');
-let chats=[],current=null,voiceMode=false,picked=[];
-try{chats=JSON.parse(localStorage.getItem('tushar_chats')||'[]')}catch(e){chats=[]}
-const save=()=>{try{localStorage.setItem('tushar_chats',JSON.stringify(chats))}catch(e){}};
+let chats=[],current=null,voiceMode=false,picked=[],loaded=false;
 const toBottom=()=>{scroll.scrollTop=scroll.scrollHeight};
+
+async function cloud(method,path,body){
+const r=await fetch('/api/chats'+path,{method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+if(!r.ok)throw new Error('cloud '+r.status);
+return r.json();
+}
+async function saveChat(c){
+try{await cloud('PUT','/'+c.id,{title:c.title,lastId:c.lastId,messages:c.messages})}catch(e){console.warn('save failed',e)}
+}
+async function migrate(){
+try{
+if(localStorage.getItem('tushar_migrated'))return;
+const old=JSON.parse(localStorage.getItem('tushar_chats')||'[]');
+for(const c of old.slice(0,50)){
+if(c&&c.id&&Array.isArray(c.messages))await cloud('PUT','/'+String(c.id).replace(/[^A-Za-z0-9_-]/g,'').slice(0,40),{title:c.title||'Chat',lastId:c.lastId||null,messages:c.messages});
+}
+localStorage.setItem('tushar_migrated','1');
+}catch(e){console.warn('migrate skipped',e)}
+}
+async function loadList(){
+try{chats=await cloud('','');loaded=true}catch(e){console.warn('list failed',e)}
+renderHistory();
+}
 
 function addMsg(text,who,time){
 const row=document.createElement('div');row.className='row '+who;
@@ -254,8 +279,8 @@ function showHome(on){$('home').style.display=on?'':'none'}
 function renderHistory(){
 const q=$('q').value.trim().toLowerCase();
 hist.innerHTML='';
-const list=chats.filter(c=>c.title.toLowerCase().includes(q));
-if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=chats.length?'No matching chats':'No chats yet';hist.appendChild(e);return}
+const list=chats.filter(c=>(c.title||'').toLowerCase().includes(q));
+if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=!loaded&&!chats.length?'Loading...':chats.length?'No matching chats':'No chats yet';hist.appendChild(e);return}
 list.forEach(c=>{
 const r=document.createElement('div');r.className='hr'+(current&&current.id===c.id?' active':'');
 const o=document.createElement('button');o.className='hist';
@@ -272,13 +297,22 @@ function openDrawer(){drawer.classList.add('open');scrim.classList.add('open')}
 $('mBtn').onclick=openDrawer;scrim.onclick=closeDrawer;
 $('sBtn').onclick=()=>{openDrawer();setTimeout(()=>$('q').focus(),250)};
 function newChat(){current=null;msgs.innerHTML='';showHome(true);scroll.scrollTop=0;renderHistory();closeDrawer()}
-function openChat(id){
-const c=chats.find(x=>x.id===id);if(!c)return;
-current=c;msgs.innerHTML='';showHome(false);
+async function openChat(id){
+closeDrawer();
+msgs.innerHTML='';showHome(false);
+const tmp=addMsg('Loading chat...','bot');
+try{
+const c=await cloud('','/'+id);
+current=c;msgs.innerHTML='';
 c.messages.forEach(m=>addMsg(m.text,m.who,m.time));
-renderHistory();closeDrawer();toBottom();
+}catch(e){setBot(tmp,'Could not load this chat. Check your connection and try again.')}
+renderHistory();toBottom();
 }
-function deleteChat(id){chats=chats.filter(c=>c.id!==id);save();if(current&&current.id===id)newChat();else renderHistory()}
+async function deleteChat(id){
+try{await cloud('DELETE','/'+id)}catch(e){alert('Could not delete. Check your connection.');return}
+chats=chats.filter(c=>c.id!==id);
+if(current&&current.id===id)newChat();else renderHistory();
+}
 $('newChat').onclick=newChat;
 
 /* Attachments */
@@ -346,10 +380,13 @@ files.filter(f=>f.kind==='text').forEach(f=>{sent+='\n\n[File: '+f.name+']\n'+f.
 const atts=files.filter(f=>f.kind!=='text').map(f=>({name:f.name,type:f.type,data:f.data}));
 const shown=files.length?text+'\n📎 '+files.map(f=>f.name).join(', '):text;
 showHome(false);
-if(!current){current={id:String(Date.now()),title:text.slice(0,40),messages:[],lastId:null};chats.unshift(current)}
+if(!current){
+current={id:String(Date.now()),title:text.slice(0,40),messages:[],lastId:null};
+chats.unshift({id:current.id,title:current.title,updated:Date.now()});
+}
 const c=current;
 c.messages.push({who:'user',text:shown,time:now()});
-save();renderHistory();
+renderHistory();
 addMsg(shown,'user');input.value='';send.disabled=true;
 const pending=addMsg('','bot');
 pending.querySelector('.txt').innerHTML='<span class="dots"><i></i><i></i><i></i></span>';
@@ -357,10 +394,15 @@ let reply,ok=false;
 try{
 const d=await getReply(sent,c.lastId,atts);
 c.lastId=d.id;reply=d.reply;ok=true;
-c.messages.push({who:'bot',text:reply,time:now()});save();
+c.messages.push({who:'bot',text:reply,time:now()});
 }catch(e){reply='Something went wrong. Check your connection and try again.'}
 if(current===c)setBot(pending,reply);
 if(ok&&voiceMode)speak(reply);
+const meta=chats.find(x=>x.id===c.id);
+if(meta){meta.updated=Date.now();meta.title=c.title}
+chats.sort((a,b)=>b.updated-a.updated);
+renderHistory();
+saveChat(c);
 send.disabled=false;toBottom();
 }
 $('form').addEventListener('submit',e=>{e.preventDefault();voiceMode=false;ask(input.value)});
@@ -380,6 +422,7 @@ try{rec.start()}catch(e){mic.classList.remove('on')}
 };
 }
 renderHistory();
+(async()=>{await migrate();await loadList()})();
 </script>
 </body>
 </html>
