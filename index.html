@@ -1307,6 +1307,102 @@ msgs.appendChild(n);toBottom();
 new MutationObserver(update).observe(msgs,{childList:true,subtree:true});
 })();
   if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
+  (function(){
+const st=document.createElement('style');
+st.textContent='.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}'
++'.acts button{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}'
++'.acts button:active{opacity:.6}';
+document.head.appendChild(st);
+
+const recs={};
+const SKIPCOPY=/^(Something went wrong|Could not load this chat|You have reached)/;
+
+async function copyText(s){
+try{await navigator.clipboard.writeText(s);return true}
+catch(e){
+try{
+const ta=document.createElement('textarea');
+ta.value=s;ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+document.body.appendChild(ta);ta.select();
+const ok=document.execCommand('copy');ta.remove();return ok;
+}catch(e2){return false}
+}
+}
+
+function regen(){
+const c=current;
+if(!c||send.disabled)return;
+const rec=recs[c.id];
+if(!rec)return;
+c.messages.length=Math.max(0,rec.n-(rec.ok?2:1));
+c.lastId=rec.prevId;
+const rows=msgs.querySelectorAll('.row');
+for(let i=1;i<=2;i++){const r=rows[rows.length-i];if(r)r.remove()}
+voiceMode=false;
+ask(rec.text);
+}
+
+const mo=new MutationObserver(()=>update());
+
+function update(){
+mo.disconnect();
+try{
+const rows=[...msgs.querySelectorAll('.row')];
+const lastRow=rows[rows.length-1];
+const c=current;
+const rec=c&&recs[c.id];
+const canRegen=!!rec&&c.messages.length===rec.n&&!send.disabled;
+rows.forEach(r=>{
+if(!r.classList.contains('bot'))return;
+const b=r.querySelector('.bubble'),t=r.querySelector('.txt');
+if(!b||!t)return;
+const txt=t.textContent.trim();
+const done=!t.querySelector('.dots')&&txt.length>0&&txt!=='Loading chat...';
+let acts=b.querySelector('.acts');
+if(!done){if(acts)acts.remove();return}
+if(!acts){acts=document.createElement('div');acts.className='acts';b.appendChild(acts)}
+let cp=acts.querySelector('.cpy');
+if(!SKIPCOPY.test(txt)&&!cp){
+cp=document.createElement('button');cp.type='button';cp.className='cpy';cp.textContent='Copy';
+cp.onclick=async()=>{
+const ok=await copyText(t.textContent.trim());
+cp.textContent=ok?'Copied ✓':'Could not copy';
+setTimeout(()=>{cp.textContent='Copy'},1500);
+};
+acts.insertBefore(cp,acts.firstChild);
+}
+let rg=acts.querySelector('.rgn');
+const want=(r===lastRow)&&canRegen;
+if(want&&!rg){
+rg=document.createElement('button');rg.type='button';rg.className='rgn';rg.textContent='Regenerate';
+rg.onclick=regen;acts.appendChild(rg);
+}else if(!want&&rg){rg.remove()}
+});
+}finally{
+mo.observe(msgs,{childList:true,subtree:true});
+}
+}
+
+const prev=ask;
+ask=function(t){
+const txt=typeof t==='string'?t.trim():'';
+const c0=current;
+const prevId=c0?c0.lastId:null;
+const hadFiles=picked.length>0;
+const p=prev(t);
+const c=current;
+if(txt&&!hadFiles&&c){
+Promise.resolve(p).then(()=>{
+const last=c.messages[c.messages.length-1];
+recs[c.id]={text:t,prevId:prevId,n:c.messages.length,ok:!!last&&last.who==='bot'};
+update();
+});
+}
+return p;
+};
+
+update();
+})();
 </script>
 </body>
 </html>
