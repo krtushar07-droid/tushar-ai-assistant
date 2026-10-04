@@ -671,8 +671,28 @@ el(d,'h3','🎓 Quiz Lab');
 el(d,'small','Pick a subject to start.');
 Object.keys(bank).forEach(s=>btn(d,s+' ('+bank[s].length+' questions)',()=>start(s)));
 btn(d,'Mixed (all subjects)',()=>start('Mixed'));
+btn(d,'📰 Current Affairs (fresh every time)',startCA);
 }
-function start(s){
+async function startCA(){
+const d=card2();
+el(d,'h3','📰 Current Affairs');
+el(d,'small','Writing fresh questions... about 10 seconds.');
+try{
+const p='Create a current affairs quiz for MBA placement students in India. Today is '+new Date().toDateString()+'. Write exactly 10 multiple-choice questions on the most recent business, economy, markets, policy, companies, technology and general news from India and the world, from roughly the last 3 months. Mix the topics. Do not repeat questions from earlier quizzes (variation code '+Math.random().toString(36).slice(2,8)+'). Only use facts you are sure about. If you are not sure about a recent event, ask about a well-known recent topic instead. Reply with ONLY a JSON array, no other text, no markdown. Each item must look exactly like: {"q":"question","o":["A","B","C","D"],"a":0} where a is the index (0 to 3) of the correct option. Put the correct answers in varied positions.';
+const r=await getReply(p,null,[]);
+let t=String(r.reply||'');
+t=t.slice(t.indexOf('['),t.lastIndexOf(']')+1);
+const qs=JSON.parse(t).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length===4&&Number.isInteger(x.a)&&x.a>=0&&x.a<4);
+if(qs.length<5)throw new Error('few');
+run('Current Affairs',qs.slice(0,10));
+}catch(e){
+const d2=card2();
+el(d2,e.message==='LIMIT'?'h3':'h3',e.message==='LIMIT'?'Daily message limit reached. Try tomorrow.':'Could not create the quiz. Please try again.');
+btn(d2,'Try again',startCA);
+btn(d2,'Back to subjects',menu);
+}
+  }
+ function start(s){
 const all=s==='Mixed'?Object.values(bank).flat():bank[s];
 run(s,shuf(all).slice(0,10));
 }
@@ -697,12 +717,12 @@ bs.push({b,k:op.k});
 }
 function finish(){
 const pct=Math.round(score/qs.length*100);
-saveScore('Quiz: '+s,score,qs.length);
+saveScore((s==='Current Affairs'?'CA: ':'Quiz: ')+s,score,qs.length);
 const d=card2();
 el(d,'h3','Your result');
 const big=el(d,'div',score+' / '+qs.length+'  ('+pct+'%)');big.style.cssText='font-size:30px;font-weight:800;margin:12px 0';
 el(d,'small',pct>=80?'Excellent work! 🎉':pct>=50?'Good effort. Try again to improve.':'Keep practising, you will get there.');
-btn(d,'Try again',()=>start(s));
+btn(d,'Try again',()=>s==='Current Affairs'?startCA():start(s));
 btn(d,'Back to subjects',menu);
 }
 show();
