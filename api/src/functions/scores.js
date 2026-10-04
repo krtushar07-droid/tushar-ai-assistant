@@ -49,7 +49,12 @@ app.http("scores", {
       }
       const rows = [];
       for await (const e of c.listEntities({ queryOptions: { filter: `PartitionKey eq '${pk}'` } })) {
-        rows.push({ subject: e.subject, score: e.score, total: e.total });
+        rows.push({
+          subject: e.subject,
+          score: e.score,
+          total: e.total,
+          when: Number(String(e.rowKey).split("_")[0]) || 0
+        });
       }
       return { jsonBody: rows.slice(-200) };
     } catch (e) {
