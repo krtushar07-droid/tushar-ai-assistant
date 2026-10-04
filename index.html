@@ -1596,25 +1596,18 @@ function renderHome(){
 hc.innerHTML='';hc.style.display='';
 const h=el(hc,'div','','up-h');
 el(h,'h3','📢 Placement Updates');
-const all=el(h,'button','See all ›','up-b');all.type='button';all.onclick=()=>openUpdates('approved');
-const pend=data.filter(x=>x.status==='pending').length;
-if(admin&&pend){
-const p=el(hc,'button',pend+' waiting for your approval →','up-pend');p.type='button';p.onclick=()=>openUpdates('pending');
-}
-const apr=data.filter(x=>x.status==='approved').slice(0,3);
-if(!apr.length){
-el(hc,'div',admin?'No approved updates yet. Approve an email to show it here.':'No updates yet. New notices from the placement cell will appear here.','up-e');
+const all=el(h,'button','See all ›','up-b');all.type='button';all.onclick=()=>openUpdates('pending');
+const x=data.filter(y=>y.status==='approved')[0];
+if(!x){
+el(hc,'div',admin?'No approved updates yet. Tap See all to approve emails.':'No updates yet. New notices from the placement cell will appear here.','up-e');
 return;
 }
 const list=el(hc,'div','','up-list');
-apr.forEach(x=>{
 const r=el(list,'button','','up-r');r.type='button';
 el(r,'b',x.title||'(no subject)');
 el(r,'span',[who(x.sender),when(x)].filter(Boolean).join(' · '));
 r.onclick=()=>openUpdates('approved');
-});
-}
-
+  }
 async function refresh(force){
 if(!force&&Date.now()-lastFetch<20000)return;
 lastFetch=Date.now();
