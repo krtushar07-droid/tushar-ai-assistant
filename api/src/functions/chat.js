@@ -1,11 +1,33 @@
 import { app } from "@azure/functions";
 import { AIProjectClient } from "@azure/ai-projects";
 import { DefaultAzureCredential } from "@azure/identity";
+import { TableClient } from "@azure/data-tables";
+
+const DAILY_LIMIT = 3;
+let usageReady = false;
 
 function getUser(req) {
   const h = req.headers.get("x-ms-client-principal");
   if (!h) return null;
   try { return JSON.parse(Buffer.from(h, "base64").toString("utf8")); } catch { return null; }
+}
+
+async function countMessage(username) {
+  const client = TableClient.fromConnectionString(process.env.STORAGE_CONNECTION_STRING, "usage");
+  if (!usageReady) {
+    try { await client.createTable(); } catch {}
+    usageReady = true;
+  }
+  const pk = String(username).toLowerCase().replace(/[^a-z0-9]/g, "_");
+  const day = new Date(Date.now() + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
+  let count = 0;
+  try {
+    const e = await client.getEntity(pk, day);
+    count = Number(e.count) || 0;
+  } catch {}
+  if (count >= DAILY_LIMIT) return false;
+  await client.upsertEntity({ partitionKey: pk, rowKey: day, count: count + 1 }, "Replace");
+  return true;
 }
 
 app.http("chat", {
@@ -17,6 +39,14 @@ app.http("chat", {
       .split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
     if (!user || !allowed.includes(String(user.userDetails).toLowerCase())) {
       return { status: 403, jsonBody: { error: "Not allowed" } };
+    }
+    try {
+      const ok = await countMessage(user.userDetails);
+      if (!ok) {
+        return { status: 429, jsonBody: { error: "Limit reached, try tomorrow" } };
+      }
+    } catch (e) {
+      ctx.error(e);
     }
     try {
       let body = {};
@@ -46,7 +76,7 @@ app.http("chat", {
       return { jsonBody: { reply: res.output_text, id: res.id } };
     } catch (e) {
       ctx.error(e);
-      return { status: 500, jsonBody: { version: "v8", error: "Agent call failed", detail: String(e?.message || e), status: e?.status } };
+      return { status: 500, jsonBody: { version: "v9", error: "Agent call failed", detail: String(e?.message || e), status: e?.status } };
     }
   },
 });
