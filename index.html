@@ -422,7 +422,8 @@ try{rec.start()}catch(e){mic.classList.remove('on')}
 };
 }
 renderHistory();
-(async()=>{await migrate();await loadList()})();
+try{localStorage.setItem('tushar_migrated','1')}catch(e){}
+loadList();
 </script>
 </body>
 </html>
