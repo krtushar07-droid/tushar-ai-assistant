@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tushar AI Admin</title>
+<style>
+body{margin:0;padding:16px;background:#0b0b1a;color:#eee;font-family:system-ui,sans-serif}
+h1{font-size:20px}
+h2{font-size:16px;margin-top:24px;color:#a99cff}
+label{display:block;font-size:13px;margin:10px 0 4px;color:#bbb}
+input,textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid #333;background:#15152a;color:#fff;font-size:15px}
+textarea{min-height:90px}
+.card{border:1px solid #2a2a45;border-radius:12px;padding:10px;margin-top:12px}
+button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:12px;background:#5b4bff;color:#fff;font-size:16px}
+#msg{margin-top:12px;font-size:14px}
+a{color:#a99cff}
+</style>
+</head>
+<body>
+<h1>Tushar AI Admin</h1>
+<a href="/">Back to chat</a>
+
+<h2>Greeting words</h2>
+<label>Separate with commas</label>
+<input id="words" placeholder="friend, champ, buddy">
+
+<h2>Category cards</h2>
+<div id="cards"></div>
+
+<h2>Suggestions</h2>
+<label>One suggestion per line</label>
+<textarea id="sugs" style="min-height:200px"></textarea>
+
+<button id="save">Save</button>
+<div id="msg"></div>
+
+<script>
+var N=4;
+var box=document.getElementById('cards');
+for(var i=0;i<N;i++){
+  box.insertAdjacentHTML('beforeend',
+  '<div class="card"><b>Card '+(i+1)+'</b>'+
+  '<label>Title</label><input id="t'+i+'">'+
+  '<label>Short description</label><input id="d'+i+'">'+
+  '<label>Message sent when tapped</label><textarea id="p'+i+'"></textarea></div>');
+}
+function $(id){return document.getElementById(id)}
+function say(t){$('msg').textContent=t}
+
+async function load(){
+  try{
+    var r=await fetch('/api/content');
+    if(!r.ok){say('Could not load ('+r.status+')');return}
+    var c=await r.json();
+    $('words').value=(c.words||[]).join(', ');
+    (c.cards||[]).slice(0,N).forEach(function(x,i){
+      $('t'+i).value=x.title||'';
+      $('d'+i).value=x.desc||'';
+      $('p'+i).value=x.prompt||'';
+    });
+    $('sugs').value=(c.suggestions||[]).join('\n');
+    say('Loaded.');
+  }catch(e){say('Load error')}
+}
+
+$('save').onclick=async function(){
+  var cards=[];
+  for(var i=0;i<N;i++){
+    var t=$('t'+i).value.trim();
+    if(t){cards.push({title:t,desc:$('d'+i).value.trim(),prompt:$('p'+i).value.trim()})}
+  }
+  var data={
+    words:$('words').value.split(',').map(function(s){return s.trim()}).filter(Boolean),
+    cards:cards,
+    suggestions:$('sugs').value.split('\n').map(function(s){return s.trim()}).filter(Boolean)
+  };
+  say('Saving...');
+  try{
+    var r=await fetch('/api/content',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    say(r.ok?'Saved!':'Save failed ('+r.status+')');
+  }catch(e){say('Save error')}
+};
+load();
+</script>
+</body>
+</html>
