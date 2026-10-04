@@ -786,6 +786,25 @@ openPractice();
 };
 });
 })();
+  /* Voice reply switch + stop speaking */
+(function(){
+let on=true;try{on=localStorage.getItem('tushar_speak')!=='0'}catch(e){}
+const b=document.createElement('button');
+b.className='ibtn';b.id='spk';b.type='button';
+const stop=()=>{if('speechSynthesis' in window)speechSynthesis.cancel()};
+function paint(){b.textContent=on?'🔊':'🔇';b.setAttribute('aria-label',on?'Spoken replies on':'Spoken replies off')}
+paint();
+b.onclick=()=>{on=!on;try{localStorage.setItem('tushar_speak',on?'1':'0')}catch(e){}paint();if(!on)stop();toast(on?'Spoken replies on':'Spoken replies off')};
+$('tBtn').before(b);
+const o=speak;
+speak=function(t){if(on)o(t)};
+document.querySelectorAll('[data-go]').forEach(x=>x.addEventListener('click',stop));
+$('newChat').addEventListener('click',stop);
+const oc=openChat;
+openChat=function(id){stop();return oc(id)};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
+window.addEventListener('pagehide',stop);
+})();
 </script>
 </body>
 </html>
