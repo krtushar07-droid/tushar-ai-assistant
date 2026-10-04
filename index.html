@@ -2,6 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Placement Lab by Tushar</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -150,6 +151,71 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 [data-theme=light] .rb:nth-of-type(2) u{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
 [data-theme=light] .rb:nth-of-type(3) u{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
 [data-theme=light] .rb:nth-of-type(4) u{background:linear-gradient(90deg,#fb923c,#fbbf24)}
+
+html[data-theme=light]{color-scheme:light}html[data-theme=dark]{color-scheme:dark}
+.ra{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0;padding:16px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+[data-theme=light] .ra{background:#fff7ea;border-color:#ffe2b8}
+.ra small{display:block;color:var(--muted);font-size:12px;font-weight:700}
+.ra b{display:block;font-size:18px;margin:4px 0 2px}
+.ra span{color:var(--muted);font-size:13px}
+.go{background:var(--g);color:#fff;font-weight:700;padding:12px 22px;border-radius:12px;flex:none}
+.exg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ex{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line);min-width:0}
+.ex b{font-size:15px}.ex>span:last-child{font-size:12px;color:var(--muted)}
+.ei{display:flex;width:38px;height:38px;border-radius:12px;align-items:center;justify-content:center;background:rgba(120,110,255,.15);color:#6a63ff;margin-bottom:6px}
+[data-theme=light] .ex:nth-child(1){background:#e8f0ff;border-color:#d3e1ff}
+[data-theme=light] .ex:nth-child(2){background:#e3f7ee;border-color:#c9eedc}
+[data-theme=light] .ex:nth-child(3){background:#efe8ff;border-color:#ddd0ff}
+[data-theme=light] .ex:nth-child(4){background:#fff0e1;border-color:#ffdcb8}
+[data-theme=light] .ex:nth-child(5){background:#fff7d6;border-color:#ffeaa0}
+[data-theme=light] .ex:nth-child(6){background:#ffe8ec;border-color:#ffcdd6}
+@media(min-width:700px){.exg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+header{background:transparent!important;border-bottom:0}
+.logo{display:none}
+.brand{font-size:22px;font-weight:800;line-height:1.05;letter-spacing:-.02em}
+.brand .th{display:block;font-size:14px;font-weight:700;color:var(--text)}
+.brand .lb{color:#4f5bff}
+.brand small:not(.th){display:block;font-size:12px;font-weight:600;color:var(--muted);text-align:right}
+#home .hero{background:url(banner.jpg) right center/cover no-repeat,linear-gradient(120deg,#ffe6d5,#dcd6ff 55%,#bccaff);min-height:170px;padding:20px 16px}
+#home h1{font-size:24px;margin-top:0}
+#home .hero>*{max-width:68%}
+.rdm{display:flex;gap:14px;align-items:center}
+.ring{width:96px;height:96px;border-radius:50%;background:conic-gradient(#34d399,#3b82f6 0%,var(--line) 0);display:grid;place-items:center;flex:none}
+.ring>div{width:74px;height:74px;border-radius:50%;background:var(--card2);display:grid;place-items:center;align-content:center;text-align:center}
+.ring b{font-size:20px}.ring small{font-size:11px;color:var(--muted)}
+.rbs{flex:1;min-width:0}
+.rbs .rb{grid-template-columns:96px 1fr 30px;font-size:11.5px;margin:6px 0;gap:6px}
+[data-theme=light] .rb:nth-child(5) u{background:linear-gradient(90deg,#fbbf24,#fde047)}
+[data-theme=light] .rb:nth-child(6) u{background:linear-gradient(90deg,#fb7185,#f43f5e)}
+.ra{display:block}
+.rh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.rm{display:flex;align-items:center;gap:12px}.rt{flex:1;min-width:0}
+.rt b{display:block;font-size:17px}.rt>span{display:block;color:var(--muted);font-size:13px;margin:2px 0 6px}
+.chip{font-style:normal;font-size:12px;padding:3px 10px;border-radius:8px;display:inline-block}
+.c1{background:#e6edff;color:#3b5bdb}.c2{background:#fff0c9;color:#a16207}.c3{background:#e8ebff;color:#4f5bff;font-weight:700}
+.exg{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ex{padding:12px 10px;position:relative}.ex b{font-size:13.5px}.ex>span:last-child{font-size:11px;padding-right:12px}
+.ex::after{content:"›";position:absolute;right:10px;bottom:8px;color:var(--muted);font-size:18px}
+.pl{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px}
+.pc{flex:none;width:200px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px}
+.pi{display:block;height:90px;border-radius:12px;background:linear-gradient(135deg,#dfe6ff,#f0e6ff);margin-bottom:8px}
+.pc p{font-size:13px;font-weight:600;margin-top:8px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.tb{padding:9px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:14px;white-space:nowrap}
+.tb.on{background:#5b5bff;color:#fff;border-color:#5b5bff}
+.emp{color:var(--muted);font-size:13px;padding:16px 4px 90px}
+[data-theme=light] #bnav .nv.on{background:#e7eaff}
+#bnav .nv{border-radius:14px;margin:0 2px}
+
+#newChat{display:none}
+.dm{display:flex;flex-direction:column;gap:2px}
+.dm .nv{padding:10px 12px;font-size:14.5px}
+.dl{font-size:12px;font-weight:700;color:var(--muted);padding:8px 4px 0;text-transform:uppercase;letter-spacing:.05em}
+.drawer{overflow-y:auto}
+#history{min-height:130px}
+#fab{position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0));z-index:6;display:flex;align-items:center;gap:8px;padding:13px 18px;border-radius:999px;background:var(--g);color:#fff;font-weight:700;box-shadow:0 10px 26px rgba(79,91,255,.4)}
+@media(min-width:900px){#fab{bottom:28px}}
 </style>
 </head>
 <body>
@@ -158,7 +224,8 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <div class="app">
 <header>
 <div class="logo">T</div>
-<div class="brand">The Placement Lab<small>by Tushar</small></div>
+<div class="brand"><small class="th">The</small>Placement <span class="lb">Lab</span><small>by Tushar</small></div>
+<button class="ibtn" id="hdrNew" data-ic="plus" aria-label="New chat" style="display:none"></button>
 <button class="ibtn" id="sBtn" data-ic="search" aria-label="Search chats"></button>
 <button class="ibtn" id="tBtn" aria-label="Switch light or dark mode"></button>
 <button class="ibtn" id="mBtn" data-ic="menu" aria-label="Menu"></button>
@@ -167,20 +234,20 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <section id="home">
 <div class="hero">
 <div class="pill"><span data-ic="spark" style="display:flex"></span>Powered by Microsoft Azure</div>
-<h1><span id="greet">Good morning</span>, <span class="grad" id="word" title="Tap to set your name">friend</span></h1>
+<h1><span id="greet">Good morning</span>, <span class="grad" id="word" title="Tap to set your name">friend</span> 👋</h1>
 <p class="sub">Small steps today, a big placement tomorrow.</p>
 <p class="qt">“Discipline today, opportunities tomorrow.”</p>
 </div>
-<div class="rd"><h3>Your Placement Readiness</h3>
-<div class="rb"><span>GD</span><i><u></u></i><em>0%</em></div>
-<div class="rb"><span>PI</span><i><u></u></i><em>0%</em></div>
-<div class="rb"><span>Quant</span><i><u></u></i><em>0%</em></div>
-<div class="rb"><span>DILR</span><i><u></u></i><em>0%</em></div>
-<small>Your scores will appear here as you practise.</small></div>
-<div class="sh"><h2>Practice Lab</h2></div>
+<div class="rd"><h3>🎯 Your Placement Readiness</h3><div class="rdm"><div class="ring"><div><b>0%</b><small>Overall</small></div></div><div class="rbs"><div class="rb"><span>CV &amp; Applications</span><i><u></u></i><em>0%</em></div><div class="rb"><span>GD</span><i><u></u></i><em>0%</em></div><div class="rb"><span>Extempore</span><i><u></u></i><em>0%</em></div><div class="rb"><span>Personal Interview</span><i><u></u></i><em>0%</em></div><div class="rb"><span>Quizzes &amp; Knowledge</span><i><u></u></i><em>0%</em></div><div class="rb"><span>Current Affairs</span><i><u></u></i><em>0%</em></div></div></div><small>Your scores will appear here as you practise.</small></div>
+<div class="ra"><div class="rh"><b>✨ Today's Recommended Activity</b><em class="chip c3">15 min</em></div><div class="rm"><div class="ei" data-ic="spark"></div><div class="rt"><b>GD Practice</b><span>Should AI replace entry-level jobs?</span><div><em class="chip c1">Current Affairs</em> <em class="chip c2">Medium</em></div></div><button class="go" id="goGD">Start →</button></div></div>
+<div class="sh"><h2>Explore The Placement Lab</h2></div>
+<div class="exg"><button class="ex" data-go="cv"><span class="ei" data-ic="doc"></span><b>CV Lab</b><span>Analyze your CV, get an ATS score</span></button><button class="ex" data-go="prac"><span class="ei" data-ic="target"></span><b>Practice Lab</b><span>GD, Extempore, PI and more</span></button><button class="ex" data-go="quiz"><span class="ei" data-ic="cap"></span><b>Quiz Lab</b><span>Subject-wise quizzes</span></button><button class="ex" data-go="pulse"><span class="ei" data-ic="chart"></span><b>Industry Pulse</b><span>Latest business updates</span></button><button class="ex" data-go="res"><span class="ei" data-ic="brief"></span><b>Resource Hub</b><span>Case studies, JDs and notes</span></button><button class="ex" data-go="ask"><span class="ei" data-ic="bulb"></span><b>Ask Tushar AI</b><span>Your personal AI coach</span></button></div>
+<div class="sh"><h2>Start practising</h2></div>
 <div class="cats" id="cats"></div>
-<div class="sh"><h2><span data-ic="spark" style="display:flex"></span>Suggested for you</h2><button class="all" id="allBtn">See all <span data-ic="chev" style="display:flex"></span></button></div>
+<div class="sh"><h2><span data-ic="spark" style="display:flex"></span>Quick starts</h2><button class="all" id="allBtn">See all <span data-ic="chev" style="display:flex"></span></button></div>
 <div id="sugs"></div>
+<div class="sh"><h2>🔥 Latest in Industry Pulse</h2></div><div class="pl"><div class="pc"><i class="pi"></i><em class="chip c1">Automobile</em><p>Live business news is coming soon.</p></div><div class="pc"><i class="pi"></i><em class="chip c1">E-commerce</em><p>Live business news is coming soon.</p></div><div class="pc"><i class="pi"></i><em class="chip c1">Finance</em><p>Live business news is coming soon.</p></div></div>
+<div class="sh"><h2>📁 Popular Resources</h2></div><div class="tabs"><button class="tb on">Case Studies</button><button class="tb">Job Descriptions</button><button class="tb">Interview Prep</button><button class="tb">MBA Notes</button></div><div class="emp">Your case studies, JDs and notes will appear here soon.</div>
 </section>
 <div id="msgs"></div>
 </div></div>
@@ -202,11 +269,14 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <button class="round send" id="send" type="submit" data-ic="send" aria-label="Send"></button>
 </div>
 </div></form>
-<nav id="bnav"><button class="nv" data-go="home"><span data-ic="spark" style="display:flex"></span>Home</button><button class="nv" data-go="prac"><span data-ic="target" style="display:flex"></span>Practice</button><button class="nv" data-go="ask"><span data-ic="bulb" style="display:flex"></span>Ask AI</button><button class="nv" data-go="res"><span data-ic="doc" style="display:flex"></span>Resources</button><button class="nv" data-go="prog"><span data-ic="chart" style="display:flex"></span>Progress</button></nav>
+<nav id="bnav"><button class="nv on" data-go="home"><span data-ic="spark" style="display:flex"></span>Home</button><button class="nv " data-go="prac"><span data-ic="target" style="display:flex"></span>Practice</button><button class="nv " data-go="res"><span data-ic="doc" style="display:flex"></span>Resources</button><button class="nv " data-go="prog"><span data-ic="chart" style="display:flex"></span>Insights</button><button class="nv " data-go="prof"><span data-ic="cap" style="display:flex"></span>Profile</button></nav>
 </div>
+<button id="fab" data-go="ask"><span data-ic="bulb" style="display:flex"></span>Ask AI</button>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer">
+<div class="dm"><button class="nv" data-go="home"><span data-ic="spark" style="display:flex"></span>Home</button><button class="nv" data-go="cv"><span data-ic="doc" style="display:flex"></span>CV Lab</button><button class="nv" data-go="prac"><span data-ic="target" style="display:flex"></span>Practice Lab</button><button class="nv" data-go="quiz"><span data-ic="cap" style="display:flex"></span>Quiz Lab</button><button class="nv" data-go="pulse"><span data-ic="chart" style="display:flex"></span>Industry Pulse</button><button class="nv" data-go="res"><span data-ic="brief" style="display:flex"></span>Resource Hub</button><button class="nv" data-go="ask"><span data-ic="bulb" style="display:flex"></span>Ask Tushar AI</button><button class="nv" data-go="prog"><span data-ic="chart" style="display:flex"></span>My Progress</button><button class="nv" data-go="prof"><span data-ic="cap" style="display:flex"></span>Profile</button></div>
 <button class="new" id="newChat"><span data-ic="plus" style="display:flex"></span>New Chat</button>
+<div class="dl">Chat history</div>
 <input id="q" type="search" placeholder="Search chats..." aria-label="Search chats">
 <div id="history"></div>
 <div class="foot"><span id="who">Signed in</span><a href="/logout">Log out</a></div>
@@ -511,9 +581,23 @@ const k=b.dataset.go;
 document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go===k));
 if(k==='home'){$('newChat').click()}
 else if(k==='prac'){$('newChat').click();setTimeout(()=>$('cats').scrollIntoView({behavior:'smooth'}),150)}
-else if(k==='ask'){input.focus()}
+else if(k==='ask'){showHome(false);input.focus()}
+else if(k==='cv'){voiceMode=false;ask('Review my CV for placements. Tell me what to attach, then give an ATS-style score out of 100, my top strengths, and the 5 most important fixes.')}
 else toast('Coming soon')
 });
+
+/* Home is a dashboard; the chat bar only shows inside a chat */
+(function(){const o=showHome;showHome=function(on){o(on);$('form').style.display=on?'none':''};
+showHome($('home').style.display!=='none');
+$('goGD').onclick=()=>{voiceMode=false;ask('Run a GD practice on the topic: "Should AI replace entry-level jobs?" Wait for my points, then score me out of 10 on content, structure and communication, and tell me how to improve.')};
+})();
+
+/* Menu, Ask AI button and New chat button */
+(function(){const o=showHome;showHome=function(on){o(on);$('fab').style.display=on?'flex':'none';$('hdrNew').style.display=on?'none':'flex'};
+showHome($('home').style.display!=='none');
+$('hdrNew').onclick=()=>{$('newChat').click()};
+document.querySelectorAll('.dm .nv').forEach(b=>b.addEventListener('click',()=>{drawer.classList.remove('open');scrim.classList.remove('open')}));
+})();
 </script>
 </body>
 </html>
