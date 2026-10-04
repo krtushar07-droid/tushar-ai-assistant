@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tushar AI</title>
+<title>The Placement Lab by Tushar</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#050816;--card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--text:#f5f7ff;--muted:#98a2c6;--panel:#0b1030;--glow:.38;--g:linear-gradient(135deg,#4f7bff,#9b5cff)}
-[data-theme=light]{--bg:#f2f4ff;--card:rgba(255,255,255,.85);--card2:#fff;--line:rgba(70,80,160,.15);--text:#10152e;--muted:#5d6791;--panel:#fff;--glow:.2}
+[data-theme=light]{--bg:#f5f7ff;--card:#fff;--card2:#fff;--line:rgba(60,70,150,.12);--text:#141a3a;--muted:#6b7499;--panel:#fff;--glow:0;--g:linear-gradient(135deg,#4f5bff,#6a63ff)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;max-width:100%;overflow-x:hidden}
 body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;transition:background .25s,color .25s}
@@ -115,13 +115,50 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 .foot a{color:#8b8bff;text-decoration:none;font-weight:600}
 @media(min-width:700px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}.cat{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+#side{display:none;position:fixed;left:0;top:0;bottom:0;width:250px;z-index:5;background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:6px;padding:calc(18px + env(safe-area-inset-top,0)) 14px 16px}
+#side .lg{font-size:22px;font-weight:800;line-height:1.1;padding:4px 10px 16px}
+#side .lg small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:4px}
+.nv{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;font-weight:600;font-size:15px;color:var(--muted);text-align:left;width:100%;text-decoration:none}
+.nv.on,.nv:hover{background:rgba(120,110,255,.16);color:var(--text)}
+#bnav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding:4px 2px calc(4px + env(safe-area-inset-bottom,0))}
+#bnav .nv{flex:1;flex-direction:column;gap:3px;font-size:11px;padding:6px 2px;align-items:center;width:auto}
+#toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:#171c3a;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+.pill{display:none!important}
+#home .hero{background:linear-gradient(120deg,#ffe6d5,#dcd6ff 55%,#bccaff);border-radius:22px;padding:22px 18px;text-align:left;color:#171c3a}
+#home .hero .sub{color:#4b5278}
+.qt{margin-top:12px;font-size:14px;color:#2b3260;background:rgba(255,255,255,.6);border-left:3px solid #4f7bff;padding:8px 12px;border-radius:10px;display:inline-block}
+.rd{margin:14px 0;padding:16px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+.rd h3{font-size:16px;margin-bottom:8px}
+.rd small{color:var(--muted);font-size:12px}
+.rb{display:grid;grid-template-columns:70px 1fr 38px;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+.rb i{height:7px;border-radius:9px;background:var(--line);overflow:hidden;display:block}
+.rb u{display:block;height:100%;width:0;background:var(--g)}
+.rb em{font-style:normal;color:var(--muted);text-align:right}
+@media(min-width:900px){#side{display:flex}.app{padding-left:250px}#bnav{display:none}.wrap{max-width:980px!important}}
+
+[data-theme=light] .rd,[data-theme=light] .cat,[data-theme=light] .sug{box-shadow:0 4px 18px rgba(60,70,150,.08)}
+[data-theme=light] .cat:nth-child(1){background:#e8f0ff;border-color:#d3e1ff}
+[data-theme=light] .cat:nth-child(2){background:#e3f7ee;border-color:#c9eedc}
+[data-theme=light] .cat:nth-child(3){background:#efe8ff;border-color:#ddd0ff}
+[data-theme=light] .cat:nth-child(4){background:#fff0e1;border-color:#ffdcb8}
+[data-theme=light] .nv.on,[data-theme=light] .nv:hover{background:#e7eaff;color:#3f4bd8}
+[data-theme=light] #bnav .nv.on{background:none;color:#3f4bd8}
+[data-theme=light] header{background:#fff}
+[data-theme=light] .rb:nth-of-type(1) u{background:linear-gradient(90deg,#34d399,#6ee7b7)}
+[data-theme=light] .rb:nth-of-type(2) u{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+[data-theme=light] .rb:nth-of-type(3) u{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
+[data-theme=light] .rb:nth-of-type(4) u{background:linear-gradient(90deg,#fb923c,#fbbf24)}
 </style>
 </head>
 <body>
+<aside id="side"><b class="lg">The<br>Placement <span class="grad">Lab</span><small>by Tushar</small></b><button class="nv" data-go="home"><span data-ic="spark" style="display:flex"></span>Home</button><button class="nv" data-go="prac"><span data-ic="target" style="display:flex"></span>Practice Lab</button><button class="nv" data-go="quiz"><span data-ic="cap" style="display:flex"></span>Quiz Lab</button><button class="nv" data-go="res"><span data-ic="doc" style="display:flex"></span>Resource Hub</button><button class="nv" data-go="ask"><span data-ic="bulb" style="display:flex"></span>Ask Tushar AI</button><button class="nv" data-go="prog"><span data-ic="chart" style="display:flex"></span>My Progress</button><a class="nv" href="/logout" style="margin-top:auto">Log out</a></aside>
+<div id="toast"></div>
 <div class="app">
 <header>
 <div class="logo">T</div>
-<div class="brand">Tushar AI<small>Personal AI Assistant</small></div>
+<div class="brand">The Placement Lab<small>by Tushar</small></div>
 <button class="ibtn" id="sBtn" data-ic="search" aria-label="Search chats"></button>
 <button class="ibtn" id="tBtn" aria-label="Switch light or dark mode"></button>
 <button class="ibtn" id="mBtn" data-ic="menu" aria-label="Menu"></button>
@@ -131,8 +168,16 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <div class="hero">
 <div class="pill"><span data-ic="spark" style="display:flex"></span>Powered by Microsoft Azure</div>
 <h1><span id="greet">Good morning</span>, <span class="grad" id="word" title="Tap to set your name">friend</span></h1>
-<p class="sub">What would you like to work on today?</p>
+<p class="sub">Small steps today, a big placement tomorrow.</p>
+<p class="qt">“Discipline today, opportunities tomorrow.”</p>
 </div>
+<div class="rd"><h3>Your Placement Readiness</h3>
+<div class="rb"><span>GD</span><i><u></u></i><em>0%</em></div>
+<div class="rb"><span>PI</span><i><u></u></i><em>0%</em></div>
+<div class="rb"><span>Quant</span><i><u></u></i><em>0%</em></div>
+<div class="rb"><span>DILR</span><i><u></u></i><em>0%</em></div>
+<small>Your scores will appear here as you practise.</small></div>
+<div class="sh"><h2>Practice Lab</h2></div>
 <div class="cats" id="cats"></div>
 <div class="sh"><h2><span data-ic="spark" style="display:flex"></span>Suggested for you</h2><button class="all" id="allBtn">See all <span data-ic="chev" style="display:flex"></span></button></div>
 <div id="sugs"></div>
@@ -157,6 +202,7 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 <button class="round send" id="send" type="submit" data-ic="send" aria-label="Send"></button>
 </div>
 </div></form>
+<nav id="bnav"><button class="nv" data-go="home"><span data-ic="spark" style="display:flex"></span>Home</button><button class="nv" data-go="prac"><span data-ic="target" style="display:flex"></span>Practice</button><button class="nv" data-go="ask"><span data-ic="bulb" style="display:flex"></span>Ask AI</button><button class="nv" data-go="res"><span data-ic="doc" style="display:flex"></span>Resources</button><button class="nv" data-go="prog"><span data-ic="chart" style="display:flex"></span>Progress</button></nav>
 </div>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer">
@@ -175,7 +221,7 @@ document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=ic(e.dataset.ic));
 /* Theme */
 const root=document.documentElement,tBtn=$('tBtn');
 function setTheme(t){root.dataset.theme=t;tBtn.innerHTML=ic(t==='dark'?'sun':'moon');try{localStorage.setItem('tushar_theme',t)}catch(e){}}
-let th='dark';try{th=localStorage.getItem('tushar_theme')||'dark'}catch(e){}
+let th='light';try{if(localStorage.getItem('tushar_pl')!=='1'){localStorage.setItem('tushar_pl','1');localStorage.setItem('tushar_theme','light')}th=localStorage.getItem('tushar_theme')||'light'}catch(e){}
 setTheme(th);
 tBtn.onclick=()=>setTheme(root.dataset.theme==='dark'?'light':'dark');
 
@@ -424,7 +470,8 @@ try{rec.start()}catch(e){mic.classList.remove('on')}
 renderHistory();
 try{localStorage.setItem('tushar_migrated','1')}catch(e){}
 loadList();
-  /* Load editable content */
+
+/* Editable content */
 (async()=>{
 try{
 const r=await fetch('/api/content');
@@ -456,6 +503,17 @@ renderSugs();
 }
 }catch(e){}
 })();
+/* Navigation */
+document.querySelectorAll('[data-ic]').forEach(e=>{if(!e.innerHTML)e.innerHTML=ic(e.dataset.ic)});
+function toast(t){const o=$('toast');o.textContent=t;o.classList.add('on');setTimeout(()=>o.classList.remove('on'),1800)}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
+const k=b.dataset.go;
+document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go===k));
+if(k==='home'){$('newChat').click()}
+else if(k==='prac'){$('newChat').click();setTimeout(()=>$('cats').scrollIntoView({behavior:'smooth'}),150)}
+else if(k==='ask'){input.focus()}
+else toast('Coming soon')
+});
 </script>
 </body>
 </html>
