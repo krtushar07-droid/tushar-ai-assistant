@@ -1135,7 +1135,6 @@ const o=showHome;showHome=function(on){o(on);box.style.display='none'};
 const TOPICS=['Automobile','E-commerce','Finance','Marketing','FMCG','Technology','Startups','Economy'];
 let topic='Automobile';
 const cache={};
-const BG={Automobile:['#4f7bff','#9b5cff'],'E-commerce':['#ff9a5c','#ff5c8a'],Finance:['#34d399','#3b82f6'],Marketing:['#a78bfa','#ec6aa0'],FMCG:['#fbbf24','#fb7185'],Technology:['#22d3ee','#6366f1'],Startups:['#818cf8','#f472b6'],Economy:['#60a5fa','#34d399']};
 const SH={
 Automobile:"<rect y='150' width='400' height='50' fill='#000' opacity='.15'/><rect x='95' y='122' width='210' height='30' rx='13' fill='#fff'/><path d='M130 124 L150 94 H250 L272 124 Z' fill='#fff'/><path d='M145 122 L157 101 H198 V122 Z' fill='#9db4ff'/><path d='M206 122 V101 H243 L257 122 Z' fill='#9db4ff'/><circle cx='148' cy='154' r='18' fill='#1f2547'/><circle cx='148' cy='154' r='7' fill='#cfd6ff'/><circle cx='252' cy='154' r='18' fill='#1f2547'/><circle cx='252' cy='154' r='7' fill='#cfd6ff'/><rect x='296' y='130' width='10' height='8' rx='3' fill='#fde047'/>",
 'E-commerce':"<path d='M110 62 H138 L160 128 H258 L280 84 H146' stroke='#fff' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='175' cy='152' r='11' fill='#fff'/><circle cx='245' cy='152' r='11' fill='#fff'/><rect x='178' y='88' width='34' height='34' rx='5' fill='#fff' opacity='.95'/><rect x='220' y='98' width='28' height='24' rx='5' fill='#fde047'/>",
@@ -1146,7 +1145,21 @@ Technology:"<rect x='150' y='58' width='100' height='84' rx='13' fill='#fff' opa
 Startups:"<path d='M200 28 Q238 64 232 122 H168 Q162 64 200 28 Z' fill='#fff'/><circle cx='200' cy='80' r='14' fill='#60a5fa'/><path d='M170 104 L142 140 L170 132 Z' fill='#fde047'/><path d='M230 104 L258 140 L230 132 Z' fill='#fde047'/><path d='M184 124 Q200 172 216 124 Z' fill='#fb923c'/><circle cx='95' cy='50' r='4' fill='#fff'/><circle cx='320' cy='70' r='5' fill='#fff'/><circle cx='300' cy='150' r='3' fill='#fff'/><circle cx='80' cy='140' r='4' fill='#fff'/>",
 Economy:"<circle cx='200' cy='100' r='58' fill='#fff' opacity='.2' stroke='#fff' stroke-width='6'/><ellipse cx='200' cy='100' rx='26' ry='58' fill='none' stroke='#fff' stroke-width='5'/><path d='M142 100 H258' stroke='#fff' stroke-width='5'/><polyline points='70,160 130,128 175,142 245,88 320,56' fill='none' stroke='#fde68a' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><path d='M300 52 L324 54 L316 76' fill='none' stroke='#fde68a' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/>"
 };
-function art(t){const k=SH[t]?t:'Finance';const c=BG[k];const s="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='"+c[0]+"'/><stop offset='1' stop-color='"+c[1]+"'/></linearGradient></defs><rect width='400' height='200' fill='url(#g)'/>"+SH[k]+"</svg>";return 'data:image/svg+xml;utf8,'+encodeURIComponent(s)}
+Object.assign(SH,{
+ev:SH.Automobile+"<path d='M214 14 L186 58 H206 L194 90 L236 44 H214 L226 14 Z' fill='#fde047'/>",
+bank:"<path d='M200 36 L306 84 H94 Z' fill='#fff'/><rect x='112' y='92' width='24' height='54' fill='#fff'/><rect x='158' y='92' width='24' height='54' fill='#fff'/><rect x='218' y='92' width='24' height='54' fill='#fff'/><rect x='264' y='92' width='24' height='54' fill='#fff'/><rect x='94' y='150' width='212' height='16' rx='4' fill='#fff'/><circle cx='200' cy='66' r='9' fill='#fde68a'/>",
+candles:"<g stroke='#fff' stroke-width='4'><line x1='115' y1='60' x2='115' y2='150'/><line x1='160' y1='45' x2='160' y2='130'/><line x1='205' y1='70' x2='205' y2='160'/><line x1='250' y1='40' x2='250' y2='120'/><line x1='295' y1='30' x2='295' y2='110'/></g><rect x='103' y='85' width='24' height='40' fill='#fff'/><rect x='148' y='65' width='24' height='45' fill='#fde68a'/><rect x='193' y='95' width='24' height='45' fill='#fff'/><rect x='238' y='55' width='24' height='40' fill='#fde68a'/><rect x='283' y='45' width='24' height='38' fill='#fff'/>",
+delivery:"<rect x='150' y='66' width='62' height='48' rx='6' fill='#fde047'/><rect x='177' y='66' width='8' height='48' fill='#f59e0b'/><rect x='120' y='118' width='146' height='20' rx='10' fill='#fff'/><path d='M252 120 L264 80 H286' stroke='#fff' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='142' cy='152' r='17' fill='#1f2547'/><circle cx='142' cy='152' r='6' fill='#cfd6ff'/><circle cx='262' cy='152' r='17' fill='#1f2547'/><circle cx='262' cy='152' r='6' fill='#cfd6ff'/><path d='M60 100 H100 M50 118 H92' stroke='#fff' stroke-width='5' stroke-linecap='round' opacity='.7'/>",
+jobs:"<path d='M170 76 V62 Q170 52 180 52 H220 Q230 52 230 62 V76' stroke='#fff' stroke-width='9' fill='none'/><rect x='125' y='76' width='150' height='86' rx='12' fill='#fff'/><rect x='125' y='108' width='150' height='6' fill='#000' opacity='.12'/><rect x='185' y='102' width='30' height='20' rx='4' fill='#6366f1'/>",
+drop:"<path d='M200 28 Q262 100 246 132 Q232 166 200 166 Q168 166 154 132 Q138 100 200 28 Z' fill='#fff'/><path d='M178 126 Q182 148 205 151' stroke='#60a5fa' stroke-width='7' fill='none' stroke-linecap='round'/>",
+phone:"<rect x='158' y='24' width='84' height='152' rx='17' fill='#fff'/><rect x='168' y='42' width='64' height='112' rx='8' fill='#6366f1'/><rect x='176' y='54' width='48' height='9' rx='4' fill='#fff' opacity='.9'/><rect x='176' y='72' width='20' height='20' rx='5' fill='#fde047'/><rect x='204' y='72' width='20' height='20' rx='5' fill='#34d399'/><rect x='176' y='100' width='20' height='20' rx='5' fill='#f472b6'/><rect x='204' y='100' width='20' height='20' rx='5' fill='#fff' opacity='.8'/><circle cx='200' cy='165' r='4' fill='#cfd6ff'/>",
+ship:"<rect x='128' y='90' width='38' height='30' fill='#fde047'/><rect x='168' y='90' width='38' height='30' fill='#fb923c'/><rect x='208' y='90' width='38' height='30' fill='#60a5fa'/><rect x='248' y='90' width='38' height='30' fill='#34d399'/><rect x='148' y='58' width='38' height='30' fill='#f472b6'/><rect x='188' y='58' width='38' height='30' fill='#a78bfa'/><path d='M88 122 H312 L286 156 H114 Z' fill='#fff'/><path d='M50 172 Q80 160 110 172 T170 172 T230 172 T290 172 T350 172' stroke='#fff' stroke-width='5' fill='none' opacity='.6'/>",
+percent:"<circle cx='200' cy='100' r='64' fill='#fff' opacity='.95'/><text x='200' y='128' font-size='86' text-anchor='middle' fill='#6366f1' font-family='sans-serif' font-weight='800'>%</text>"
+});
+const PAL=[['#4f7bff','#9b5cff'],['#ff9a5c','#ff5c8a'],['#34d399','#3b82f6'],['#a78bfa','#ec6aa0'],['#fbbf24','#fb7185'],['#22d3ee','#6366f1'],['#818cf8','#f472b6'],['#60a5fa','#34d399']];
+const KEYS=[[/\b(ev|evs|electric|battery|charging)\b/,'ev'],[/(quick.commerce|delivery|zepto|blinkit|swiggy|instamart|logistics|courier)/,'delivery'],[/(rbi|bank|repo|interest rate|loan|npa|credit|lender)/,'bank'],[/(sensex|nifty|stock|shares?\b|market|ipo|mutual fund|equity|investor)/,'candles'],[/(hiring|jobs?\b|recruit|layoff|employment|workforce|salary|salaries)/,'jobs'],[/(\boil\b|crude|fuel|petrol|diesel|opec)/,'drop'],[/(smartphone|iphone|phone|mobile|5g|telecom)/,'phone'],[/(export|import|trade|tariff|shipping|port\b|supply chain|container)/,'ship'],[/(\bgst\b|\btax|inflation|\bcpi\b|rate cut|percent|%)/,'percent'],[/(\bai\b|artificial intelligence|chip|semiconductor|software|cloud)/,'Technology'],[/(startup|funding|raises|series [a-c]|unicorn|venture)/,'Startups'],[/(\bads?\b|advertis|campaign|brand|marketing)/,'Marketing'],[/(fmcg|grocery|consumer goods|retail)/,'FMCG'],[/(\bcars?\b|\bsuv|auto sales|vehicle|maruti|tata motors|mahindra|hyundai|automaker)/,'Automobile'],[/(online|e-commerce|amazon|flipkart|meesho|myntra)/,'E-commerce'],[/(gdp|economy|economic|growth|fiscal|budget)/,'Economy']];
+function scene(t,title){const s=String(title||'').toLowerCase();for(const k of KEYS)if(k[0].test(s))return k[1];return SH[t]?t:'Finance'}
+function art(t,title){const k=scene(t,title);const h=String(title||t).split('').reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);const c=PAL[h%PAL.length];const s="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='"+c[0]+"'/><stop offset='1' stop-color='"+c[1]+"'/></linearGradient></defs><rect width='400' height='200' fill='url(#g)'/>"+SH[k]+"</svg>";return 'data:image/svg+xml;utf8,'+encodeURIComponent(s)}
 
 function el(p,tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;p.appendChild(e);return e}
 function ago(iso){
@@ -1187,7 +1200,7 @@ out.innerHTML='';
 if(!items.length){el(out,'div','No headlines found right now. Try another topic.','pn-h');return}
 items.forEach(x=>{
 const c=el(out,'div','','pn-c');
-{const im=el(c,'img','','pn-i');im.loading='lazy';im.alt='';im.referrerPolicy='no-referrer';im.onerror=()=>{im.onerror=null;im.src=art(topic)};im.src=x.image||art(topic)}
+{const im=el(c,'img','','pn-i');im.loading='lazy';im.alt='';im.referrerPolicy='no-referrer';im.onerror=()=>{im.onerror=null;im.src=art(topic,x.title)};im.src=x.image||art(topic,x.title)}
 el(c,'span',x.source+(x.date?' · '+ago(x.date):''),'pn-m');
 el(c,'b',x.title);
 const row=el(c,'div','','pn-r');
@@ -1227,7 +1240,8 @@ c.onclick=()=>openPulse(t);
 news(t).then(items=>{
 if(items[0])c.querySelector('p').textContent=items[0].title;
 const w=items.find(i=>i.image);
-if(w){im.onerror=()=>{im.onerror=null;im.src=art(t)};im.src=w.image}
+if(w){im.onerror=()=>{im.onerror=null;im.src=art(t,items[0].title)};im.src=w.image}
+else if(items[0])im.src=art(t,items[0].title)
 }).catch(()=>{});
 });
 })();
