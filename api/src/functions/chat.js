@@ -3,7 +3,7 @@ import { AIProjectClient } from "@azure/ai-projects";
 import { DefaultAzureCredential } from "@azure/identity";
 import { TableClient } from "@azure/data-tables";
 
-const DAILY_LIMIT = 3;
+const DAILY_LIMIT = 50;
 let usageReady = false;
 
 function getUser(req) {
