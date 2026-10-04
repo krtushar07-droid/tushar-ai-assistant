@@ -262,7 +262,7 @@ header{background:transparent!important;border-bottom:0}
 <button class="round plus" id="attach" type="button" data-ic="plus" aria-label="Attach"></button>
 <input type="file" id="camIn" accept="image/*" capture="environment" hidden>
 <input type="file" id="galIn" accept="image/*" multiple hidden>
-<input type="file" id="fileIn" accept=".pdf,.txt,.md,.csv,.json,text/plain,application/pdf" multiple hidden>
+<input type="file" id="fileIn" accept=".pdf,.docx,.xlsx,.xls,.pptx,.txt,.md,.csv,.json,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain" multiple hidden>
 <input type="text" id="input" placeholder="Message Tushar AI..." aria-label="Message Tushar AI">
 <button class="round mic" id="mic" type="button" data-ic="mic" aria-label="Voice input"></button>
 <div class="sep"></div>
@@ -281,6 +281,9 @@ header{background:transparent!important;border-bottom:0}
 <div id="history"></div>
 <div class="foot"><span id="who">Signed in</span><a href="/logout">Log out</a></div>
 </aside>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const API='/api/chat';
 const $=id=>document.getElementById(id);
