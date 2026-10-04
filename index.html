@@ -584,7 +584,7 @@ if(k==='home'){$('newChat').click()}
 else if(k==='prac'){$('newChat').click();setTimeout(()=>$('cats').scrollIntoView({behavior:'smooth'}),150)}
 else if(k==='ask'){showHome(false);input.focus()}
 else if(k==='cv'){voiceMode=false;ask('Review my CV for placements. Tell me what to attach, then give an ATS-style score out of 100, my top strengths, and the 5 most important fixes.')}
-else toast('Coming soon')
+else if(k==='quiz'){openQuiz()}else toast('Coming soon')
 });
 
 /* Home is a dashboard; the chat bar only shows inside a chat */
@@ -598,6 +598,66 @@ $('goGD').onclick=()=>{voiceMode=false;ask('Run a GD practice on the topic: "Sho
 showHome($('home').style.display!=='none');
 $('hdrNew').onclick=()=>{$('newChat').click()};
 document.querySelectorAll('.dm .nv').forEach(b=>b.addEventListener('click',()=>{drawer.classList.remove('open');scrim.classList.remove('open')}));
+})();
+  /* Quiz Lab */
+(function(){
+const qb=document.createElement('div');qb.id='quizBox';qb.style.display='none';
+$('msgs').before(qb);
+const o=showHome;showHome=function(on){o(on);qb.style.display='none'};
+let bank=null;
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+function el(p,tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;p.appendChild(e);return e}
+function btn(p,text,fn){const b=el(p,'button',text,'ex');b.type='button';b.style.cssText='width:100%;margin:8px 0;font-size:15px';b.onclick=fn;return b}
+function card2(){qb.innerHTML='';return el(qb,'div','','rd')}
+async function openQuiz(){
+current=null;msgs.innerHTML='';showHome(false);$('form').style.display='none';
+qb.style.display='block';scroll.scrollTop=0;
+el(card2(),'h3','Loading quizzes...');
+if(!bank){try{const r=await fetch('/quizzes.json');bank=await r.json()}catch(e){qb.firstChild.textContent='Could not load quizzes. Try again.';return}}
+menu();
+}
+window.openQuiz=openQuiz;
+function menu(){
+const d=card2();
+el(d,'h3','🎓 Quiz Lab');
+el(d,'small','Pick a subject to start.');
+Object.keys(bank).forEach(s=>btn(d,s+' ('+bank[s].length+' questions)',()=>start(s)));
+btn(d,'Mixed (all subjects)',()=>start('Mixed'));
+}
+function start(s){
+const all=s==='Mixed'?Object.values(bank).flat():bank[s];
+run(s,shuf(all).slice(0,10));
+}
+function run(s,qs){
+let i=0,score=0;
+function show(){
+const d=card2();
+el(d,'small','Question '+(i+1)+' of '+qs.length+' · '+s);
+el(d,'h3',qs[i].q).style.margin='10px 0';
+let done=false;const bs=[];
+shuf(qs[i].o.map((t,k)=>({t,k}))).forEach(op=>{
+const b=btn(d,op.t,()=>{
+if(done)return;done=true;
+if(op.k===qs[i].a)score++;
+else{b.style.background='#ffd5da';b.style.color='#141a3a'}
+bs.forEach(x=>{if(x.k===qs[i].a){x.b.style.background='#c9f2dc';x.b.style.color='#141a3a'}});
+const n=btn(d,i+1<qs.length?'Next →':'See result',()=>{i++;if(i<qs.length)show();else finish()});
+n.style.background='var(--g)';n.style.color='#fff';n.style.alignItems='center';
+});
+bs.push({b,k:op.k});
+});
+}
+function finish(){
+const pct=Math.round(score/qs.length*100);
+const d=card2();
+el(d,'h3','Your result');
+const big=el(d,'div',score+' / '+qs.length+'  ('+pct+'%)');big.style.cssText='font-size:30px;font-weight:800;margin:12px 0';
+el(d,'small',pct>=80?'Excellent work! 🎉':pct>=50?'Good effort. Try again to improve.':'Keep practising, you will get there.');
+btn(d,'Try again',()=>start(s));
+btn(d,'Back to subjects',menu);
+}
+show();
+}
 })();
 </script>
 </body>
