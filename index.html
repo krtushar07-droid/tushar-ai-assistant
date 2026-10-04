@@ -347,7 +347,7 @@ CATS.forEach(c=>$('cats').appendChild(card('cat',c,c.c,'Help me with '+c.t.toLow
 let showAll=false;
 function renderSugs(){
 $('sugs').innerHTML='';
-(showAll?SUGS:SUGS.slice(0,3)).forEach((s,i)=>$('sugs').appendChild(card('sug',s,COL[i%COL.length],s.t+'.')));
+(showAll?SUGS:SUGS.slice(0,3)).forEach((s,i)=>$('sugs').appendChild(card('sug',s,COL[i%COL.length],s.p||s.t+'.')));
 $('allBtn').firstChild.textContent=showAll?'Show less ':'See all ';
 }
 $('allBtn').onclick=()=>{showAll=!showAll;renderSugs()};
@@ -595,34 +595,63 @@ try{localStorage.setItem('tushar_migrated','1')}catch(e){}
 loadList();
 
 /* Editable content */
+/* Editable content */
 (async()=>{
 try{
 const r=await fetch('/api/content');
 if(!r.ok)return;
 const c=await r.json();
 const ICONS=['target','doc','brief','mail','bulb','cap','pen','code','globe','chart'];
+const val=s=>String(s==null?'':s).trim();
+const q=s=>document.querySelector(s);
 if(c.words&&c.words.length){
 WORDS.length=0;c.words.forEach(w=>WORDS.push(w));
 if(!uname)$('word').textContent=WORDS[Math.floor(Math.random()*WORDS.length)];
 }
-if(c.cards&&c.cards.length){
-const old=CATS.slice();
-const COLS=['#4d7bff','#a98bff','#2dd4a0','#ffb23f'];
+if(Array.isArray(c.cards)&&c.cards.length){
 $('cats').innerHTML='';
-c.cards.forEach((x,i)=>{
-const it={t:x.title,d:x.desc||'',i:(old[i]&&old[i].i)||ICONS[i%ICONS.length]};
-const col=(old[i]&&old[i].c)||COLS[i%COLS.length];
-$('cats').appendChild(card('cat',it,col,x.prompt||('Help me with '+x.title.toLowerCase()+'.')));
+CATS.forEach((d,i)=>{
+const x=c.cards[i]||{};
+const t=val(x.title)||d.t;
+const it={t:t,d:val(x.desc)||(val(x.title)?'':d.d),i:P[x.icon]?x.icon:d.i};
+$('cats').appendChild(card('cat',it,d.c,val(x.prompt)||('Help me with '+t.toLowerCase()+'.')));
 });
 }
-if(c.suggestions&&c.suggestions.length){
+if(Array.isArray(c.suggestions)&&c.suggestions.length){
 const old=SUGS.slice();
 SUGS.length=0;
-c.suggestions.forEach((t,i)=>{
-const m=old.find(o=>o.t===t);
-SUGS.push({t:t,d:m?m.d:'',i:m?m.i:ICONS[i%ICONS.length]});
+c.suggestions.forEach((line,i)=>{
+const p=String(line).split('|').map(s=>s.trim());
+const m=old.find(o=>o.t===p[0]);
+SUGS.push({t:p[0],d:p[1]||(m?m.d:''),p:p.slice(2).join('|').trim(),i:m?m.i:ICONS[i%ICONS.length]});
 });
 renderSugs();
+}
+if(val(c.notice)){
+const n=document.createElement('div');n.className='rd';
+n.style.cssText='background:#fff7ea;border-color:#ffe2b8;color:#141a3a;font-weight:600;font-size:14px';
+n.textContent='📢 '+val(c.notice);
+$('home').insertBefore(n,$('home').firstChild);
+}
+if(val(c.sub))q('#home .hero .sub').textContent=val(c.sub);
+if(val(c.quote))q('#home .hero .qt').textContent='“'+val(c.quote)+'”';
+const a=c.activity||{};
+if(val(a.title))q('.ra .rt b').textContent=val(a.title);
+if(val(a.topic))q('.ra .rt>span').textContent=val(a.topic);
+if(val(a.minutes)){const m=val(a.minutes);q('.ra .c3').textContent=/^\d+$/.test(m)?m+' min':m}
+if(val(a.tag))q('.ra .c1').textContent=val(a.tag);
+if(val(a.level))q('.ra .c2').textContent=val(a.level);
+if(val(a.prompt)||val(a.title)||val(a.topic)){
+const pr=val(a.prompt)||('Run a practice on: '+(val(a.title)||'this topic')+(val(a.topic)?' - '+val(a.topic):'')+'. Wait for my response, then give me feedback.');
+$('goGD').onclick=()=>{voiceMode=false;ask(pr)};
+}
+if(Array.isArray(c.extopics)&&c.extopics.length){
+const pe=ask;
+ask=function(t){
+if(typeof t==='string'&&t.indexOf('Run an extempore practice. The topic is: "')===0)
+t=t.replace(/topic is: "[^"]*"/,()=>'topic is: "'+c.extopics[Math.floor(Math.random()*c.extopics.length)]+'"');
+return pe(t);
+};
 }
 }catch(e){}
 })();
