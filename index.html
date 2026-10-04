@@ -261,7 +261,7 @@ header{background:transparent!important;border-bottom:0}
 <div class="composer">
 <button class="round plus" id="attach" type="button" data-ic="plus" aria-label="Attach"></button>
 <input type="file" id="camIn" accept="image/*" capture="environment" hidden>
-<input type="file" id="galIn" accept="image/jpeg,image/png,image/webp" multiple hidden>
+<input type="file" id="galIn" accept="image/*" multiple hidden>
 <input type="file" id="fileIn" accept=".pdf,.docx,.xlsx,.xls,.pptx,.txt,.md,.csv,.json,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain" multiple hidden>
 <input type="text" id="input" placeholder="Message Tushar AI..." aria-label="Message Tushar AI">
 <button class="round mic" id="mic" type="button" data-ic="mic" aria-label="Voice input"></button>
@@ -466,7 +466,23 @@ if(f.size>5e6){alert(f.name+' is over 5 MB.');continue}
 picked.push({name:f.name,kind:'file',type:f.type,data:await rd(f,'readAsDataURL')});
 }else if(/\.(txt|md|csv|json)$/i.test(f.name)||f.type.startsWith('text/'))
 picked.push({name:f.name,kind:'text',text:(await rd(f,'readAsText')).slice(0,20000)});
-else alert(f.name+' is not supported. Use images, PDF, or text files.');
+else if(/\.docx$/i.test(f.name)&&window.mammoth){
+const r=await window.mammoth.extractRawText({arrayBuffer:await rd(f,'readAsArrayBuffer')});
+picked.push({name:f.name,kind:'text',text:r.value.slice(0,20000)});
+}
+else if(/\.(xlsx|xls)$/i.test(f.name)&&window.XLSX){
+const wb=XLSX.read(await rd(f,'readAsArrayBuffer'),{type:'array'});
+let t='';wb.SheetNames.forEach(n=>{t+='Sheet: '+n+'\n'+XLSX.utils.sheet_to_csv(wb.Sheets[n])+'\n'});
+picked.push({name:f.name,kind:'text',text:t.slice(0,20000)});
+}
+else if(/\.pptx$/i.test(f.name)&&window.JSZip){
+const z=await JSZip.loadAsync(await rd(f,'readAsArrayBuffer'));
+const names=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>parseInt(a.match(/\d+/)[0])-parseInt(b.match(/\d+/)[0]));
+let t='';
+for(let i=0;i<names.length;i++){const x=await z.files[names[i]].async('string');t+='Slide '+(i+1)+': '+(x.match(/<a:t>[^<]*<\/a:t>/g)||[]).map(s=>s.replace(/<[^>]+>/g,'')).join(' ')+'\n'}
+picked.push({name:f.name,kind:'text',text:t.slice(0,20000)});
+}
+else alert(f.name+' is not supported. Use images, PDF, Word (.docx), Excel, PowerPoint (.pptx) or text files.');
 }catch(e){alert('Could not read '+f.name)}
 }
 renderTray();
@@ -530,17 +546,34 @@ $('form').addEventListener('submit',e=>{e.preventDefault();voiceMode=false;ask(i
 /* Voice */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){mic.style.display='none';document.querySelector('.sep').style.display='none'}else{
-const rec=new SR();rec.lang='en-IN';rec.interimResults=false;
-rec.onresult=e=>{voiceMode=true;ask(e.results[0][0].transcript)};
-rec.onend=()=>mic.classList.remove('on');
-rec.onerror=()=>mic.classList.remove('on');
+const rec=new SR();rec.lang='en-IN';rec.continuous=true;rec.interimResults=true;
+let listening=false,saved='';
+rec.onresult=e=>{
+let t='';
+for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript+' ';
+input.value=(saved+t).trim();
+};
+rec.onend=()=>{
+if(listening){
+saved=input.value?input.value+' ':'';
+try{rec.start()}catch(e){listening=false;mic.classList.remove('on')}
+return;
+}
+mic.classList.remove('on');
+const t=input.value.trim();
+if(t){voiceMode=true;ask(t)}
+};
+rec.onerror=e=>{
+if(e.error==='not-allowed'||e.error==='service-not-allowed'){listening=false;mic.classList.remove('on')}
+};
 mic.onclick=()=>{
 if('speechSynthesis' in window)speechSynthesis.cancel();
-if(mic.classList.contains('on')){rec.stop();return}
-mic.classList.add('on');
-try{rec.start()}catch(e){mic.classList.remove('on')}
+if(listening){listening=false;rec.stop();return}
+saved=input.value?input.value+' ':'';
+listening=true;mic.classList.add('on');
+try{rec.start()}catch(e){listening=false;mic.classList.remove('on')}
 };
-}
+  }
 renderHistory();
 try{localStorage.setItem('tushar_migrated','1')}catch(e){}
 loadList();
