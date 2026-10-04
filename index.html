@@ -837,6 +837,180 @@ openChat=function(id){stop();return oc(id)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
 window.addEventListener('pagehide',stop);
 })();
+/* Insights + Profile screens v2 */
+(function(){
+const box=document.createElement('div');box.id='infoBox';box.style.display='none';
+$('msgs').before(box);
+const st=document.createElement('style');
+st.textContent='#infoBox{padding-bottom:24px}#infoBox h3{font-size:19px;margin:0}#infoBox small{color:var(--muted);display:block;line-height:1.45}'
++'.hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.hd h3{display:flex;align-items:center;gap:8px}.hd h3 svg{width:20px;height:20px;color:#6d6bff}'
++'.ph{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0;padding:18px;border-radius:24px;background:linear-gradient(135deg,rgba(255,170,160,.28),rgba(160,140,255,.28),rgba(100,160,255,.32));border:1px solid var(--line)}'
++'.pavw{position:relative;width:88px;height:88px;flex:none}.pavw img,.pav2{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid var(--card2);display:grid;place-items:center;background:var(--g);color:#fff;font-size:36px;font-weight:800}'
++'.pcam{position:absolute;right:-4px;bottom:-4px;width:34px;height:34px;border-radius:50%;background:#4f5bff;color:#fff;border:2px solid var(--card2);display:grid;place-items:center;cursor:pointer}.pcam svg{width:17px;height:17px}'
++'.ptx{flex:1;min-width:130px}.ptx b{display:block;font-size:22px;line-height:1.2}.ptx span,.ptx em{display:block;color:var(--muted);font-style:normal;margin-top:4px;font-size:14px}'
++'.ebtn{padding:12px 16px;border-radius:14px;border:0;background:var(--g);color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-left:auto}'
++'.pr{display:flex;align-items:center;gap:10px;margin-top:10px;padding:11px 14px;border-radius:14px;background:var(--card2);border:1px solid var(--line)}.pr div{flex:1;min-width:0}.pr small{font-size:12px}.pr b{display:block;font-size:16px;font-weight:600;overflow-wrap:anywhere}.pr input{width:100%;margin-top:4px;padding:6px 0;border:0;border-bottom:1.5px solid #6d6bff;background:transparent;color:var(--text);font:inherit;font-size:16px;outline:0}.pr button{background:none;border:0;color:var(--muted);cursor:pointer;padding:6px}.pr svg{width:18px;height:18px}'
++'.row2{display:flex;gap:10px;margin-top:12px}.row2 .ab{margin:0;text-align:center}'
++'.sel{padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:13px}'
++'.st3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.st3>div{padding:12px 8px;border-radius:16px;border:1px solid var(--line);text-align:center}.st3 b{display:block;font-size:24px;line-height:1.1}.st3 span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}.st3 i{display:block;font-style:normal;font-size:20px;margin-bottom:4px}'
++'.hero2{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.rg{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;flex:none}.rg span{width:80px;height:80px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:26px;font-weight:800}.hero2 .tt{flex:1;min-width:140px}.hero2 .tt b{display:block;font-size:20px;margin-bottom:4px}'
++'.chart{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:12px;padding-top:6px}.chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;min-width:0}.chart u{width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#6d6bff,#3b82f6);text-decoration:none}.chart span{font-size:10.5px;color:var(--muted);margin-top:4px}'
++'.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.ac{padding:13px;border-radius:18px;background:var(--card2);border:1px solid var(--line);min-width:0}.ac .ai{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;margin-bottom:8px}.ac .ai svg{width:19px;height:19px}.ac b{display:block;font-size:14px;line-height:1.25}.ac strong{display:block;font-size:24px;margin:4px 0}.ac small{font-size:11.5px}'
++'.tr2{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}.tr2 u{display:block;height:100%;border-radius:99px;text-decoration:none}'
++'.mini{margin-top:8px;padding:8px;width:100%;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer}'
++'.ab{display:flex;align-items:center;gap:12px;width:100%;margin:8px 0 0;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer}.ab span:last-child{color:var(--muted);font-weight:500;font-size:12.5px;display:block}'
++'.bgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.bd{padding:12px 6px;border-radius:16px;background:var(--card2);border:1px solid var(--line);text-align:center;font-size:12px;font-weight:600}.bd i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}.bd.off{opacity:.4;filter:grayscale(1)}'
++'.rc{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}.rc span{color:var(--muted);white-space:nowrap}';
+document.head.appendChild(st);
+
+const NAMES={cv:'CV & Applications',gd:'Group Discussion',ext:'Extempore',pi:'Personal Interview',quiz:'Quizzes & Knowledge',ca:'Current Affairs'};
+const COL={cv:'#34d399',gd:'#4d7bff',ext:'#a98bff',pi:'#ffb23f',quiz:'#ec6aa0',ca:'#f43f5e'};
+const ICO={cv:'doc',gd:'chat',ext:'mic',pi:'brief',quiz:'cap',ca:'globe'};
+const KEYS=Object.keys(NAMES);
+const areaOf=s=>{s=String(s).toLowerCase();return s.startsWith('quiz')?'quiz':s.startsWith('gd')?'gd':s.startsWith('ext')?'ext':s.startsWith('pi')?'pi':s.startsWith('cv')?'cv':s.startsWith('ca')?'ca':null};
+function E(p,tag,text,cls){const e=document.createElement(tag);if(text!=null&&text!=='')e.textContent=text;if(cls)e.className=cls;p.appendChild(e);return e}
+function head(p,icon,title){const h=E(p,'div','','hd');const t=E(h,'h3');t.innerHTML=ic(icon);t.appendChild(document.createTextNode(title));return h}
+const dd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function logDay(){try{const a=JSON.parse(localStorage.getItem('tushar_days')||'[]');const t=dd(new Date());if(a[a.length-1]!==t){a.push(t);localStorage.setItem('tushar_days',JSON.stringify(a.slice(-120)))}}catch(e){}}
+function streak(rows){let a=[];if(rows&&hasDates(rows))a=rows.filter(x=>x.d).map(x=>dd(x.d));else{try{a=JSON.parse(localStorage.getItem('tushar_days')||'[]')}catch(e){}}const set=new Set(a);let s=0,d=new Date();if(!set.has(dd(d)))d.setDate(d.getDate()-1);while(set.has(dd(d))){s++;d.setDate(d.getDate()-1)}return s}
+logDay();
+const T=x=>{const v=x.when||x.ts||x.time||x.date||x.updated||x.createdAt||x.timestamp;if(!v)return null;const d=new Date(isNaN(v)?v:Number(v));return isNaN(d)?null:d};
+async function load(){const r=await fetch('/api/scores');if(!r.ok)throw new Error('scores');return (await r.json()).filter(x=>areaOf(x.subject)&&x.total>0).map(x=>({a:areaOf(x.subject),s:x.subject,sc:x.score,tt:x.total,p:x.score/x.total*100,d:T(x)}))}
+const hasDates=r=>r.some(x=>x.d);
+function inRange(r,per){if(per==='all'||!hasDates(r))return r;const cut=Date.now()-(per==='week'?7:30)*864e5;return r.filter(x=>!x.d||x.d.getTime()>=cut)}
+function sum(r){const A={};r.forEach(x=>{const s=A[x.a]||(A[x.a]={t:0,n:0,best:0});s.t+=x.p;s.n++;if(x.p>s.best)s.best=x.p});return A}
+const av=(A,k)=>Math.round(A[k].t/A[k].n);
+function go(k){if(k==='quiz'||k==='ca')window.openQuiz();else if(k==='cv')document.querySelector('[data-go="cv"]').click();else document.querySelector('#bnav [data-go="prac"]').click()}
+function period(p,rows,val,cb){if(!hasDates(rows)){const s=E(p,'small','All time');return}const s=E(p,'select','','sel');[['week','This week'],['month','This month'],['all','All time']].forEach(o=>{const op=E(s,'option',o[1]);op.value=o[0]});s.value=val;s.onchange=()=>cb(s.value)}
+
+/* ---------- Insights ---------- */
+let iPer='all',iRows=[],iErr=false;
+function renderInsights(){
+box.innerHTML='';
+const rows=inRange(iRows,iPer),A=sum(rows),done=KEYS.filter(k=>A[k]);
+const overall=done.length?Math.round(done.reduce((s,k)=>s+av(A,k),0)/done.length):0;
+const level=!done.length?'Take your first quiz to begin':overall<40?'Getting started':overall<70?'Building momentum':overall<85?'Almost there':'Placement ready';
+const hero=E(box,'div','','rd');
+const hh=head(hero,'chart','My Insights');period(hh,iRows,iPer,v=>{iPer=v;renderInsights()});
+if(iErr)E(hero,'small','Could not load your scores. Check your connection.');
+const h2=E(hero,'div','','hero2');
+const rg=E(h2,'div','','rg');rg.style.background='conic-gradient(#34d399,#3b82f6 '+overall+'%,var(--line) 0)';E(rg,'span',overall+'%');
+const tt=E(h2,'div','','tt');E(tt,'b',level);E(tt,'small',done.length?'Average across '+done.length+' of 6 areas.':'Your scores from quizzes and practice rounds will build this picture.');
+const g=E(hero,'div','','st3');
+[['🎯',rows.length,'Attempts','rgba(109,107,255,.12)'],['🧭',done.length+'/6','Areas tried','rgba(52,211,153,.12)'],['🔥',streak(iRows),'Day streak','rgba(255,178,63,.14)']].forEach(i=>{const x=E(g,'div');x.style.background=i[3];E(x,'i',i[0]);E(x,'b',String(i[1]));E(x,'span',i[2])});
+
+const tr=E(box,'div','','rd');head(tr,'chart','Score trend');
+const last=(hasDates(rows)?rows.slice().sort((a,b)=>(a.d||0)-(b.d||0)):rows).slice(-10);
+E(tr,'small',last.length?'Your last '+last.length+' attempts.':'Your scores will chart here after your first attempt.');
+const ch=E(tr,'div','','chart');
+if(last.length)last.forEach(x=>{const c=E(ch,'div');const u=E(c,'u');u.style.height=Math.max(6,x.p)+'%';u.title=x.s;E(c,'span',Math.round(x.p)+'')});
+else for(let i=0;i<8;i++){const c=E(ch,'div');const u=E(c,'u');u.style.height=(12+i*4)+'%';u.style.opacity='.15';E(c,'span','–')}
+
+const sk=E(box,'div','','rd');head(sk,'target','Skills breakdown');
+const g2=E(sk,'div','','g2');
+KEYS.forEach(k=>{
+const c=E(g2,'div','','ac');
+const i=E(c,'div','','ai');i.style.background=COL[k]+'22';i.style.color=COL[k];i.innerHTML=ic(ICO[k]);
+E(c,'b',NAMES[k]);E(c,'strong',A[k]?av(A,k)+'%':'0%');
+const bar=E(E(c,'div','','tr2'),'u');bar.style.width=(A[k]?av(A,k):0)+'%';bar.style.background=COL[k];
+E(c,'small',A[k]?'Best '+Math.round(A[k].best)+'% · '+A[k].n+(A[k].n>1?' tries':' try'):'Not started yet');
+E(c,'button',A[k]?'Practise again':'Start now','mini').onclick=()=>go(k);
+});
+
+const order=KEYS.slice().sort((a,b)=>(A[a]?av(A,a):-1)-(A[b]?av(A,b):-1));
+const strong=done.slice().sort((a,b)=>av(A,b)-av(A,a))[0];
+const fc=E(box,'div','','rd');head(fc,'spark','Strengths and focus');
+const f2=E(fc,'div','','g2');
+const s1=E(f2,'div','','ac');E(s1,'b','💪 Strongest');E(s1,'strong',strong?NAMES[strong]:'Not yet');s1.querySelector('strong').style.fontSize='15px';E(s1,'small',strong?av(A,strong)+'% average':'Complete a round to find out');
+const s2=E(f2,'div','','ac');E(s2,'b','🎯 Needs work');E(s2,'strong',NAMES[order[0]]);s2.querySelector('strong').style.fontSize='15px';E(s2,'small',A[order[0]]?av(A,order[0])+'% average':'Not started yet');
+
+const nx=E(box,'div','','rd');head(nx,'bulb','Recommended next steps');
+const TXT={quiz:['Take a 10-question quiz','Quick knowledge check'],ca:['Try a Current Affairs round','Fresh questions every time'],gd:['Run a GD practice','Get scored out of 10'],ext:['Do an extempore round','Think fast, speak well'],pi:['Start a mock interview','8 strict questions'],cv:['Get your CV scored','Upload and get an ATS score']};
+order.slice(0,3).forEach(k=>{const b=E(nx,'button','','ab');const i=E(b,'div','','ai');i.style.cssText='width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;background:'+COL[k]+'22;color:'+COL[k];i.innerHTML=ic(ICO[k]);const t=E(b,'div');t.style.flex='1';E(t,'span',TXT[k][0]).style.cssText='color:var(--text);font-weight:600;font-size:15px';E(t,'span',TXT[k][1]);b.onclick=()=>go(k)});
+
+const n=iRows.length,best=iRows.reduce((m,x)=>Math.max(m,x.p),0),all=Object.keys(sum(iRows)).length;
+const bg=E(box,'div','','rd');head(bg,'target','Milestones');
+const bl=E(bg,'div','','bgs');
+[['🌱','First attempt',n>=1],['⭐','5 attempts',n>=5],['🏅','10 attempts',n>=10],['🚀','Scored 80%+',best>=80],['🧭','All 6 areas',all>=6],['🔥','3-day streak',streak(iRows)>=3]].forEach(b=>{const x=E(bl,'div','','bd'+(b[2]?'':' off'));E(x,'i',b[0]);E(x,'span',b[1])});
+
+const rc=E(box,'div','','rd');head(rc,'doc','Recent activity');
+const rec=(hasDates(iRows)?iRows.slice().sort((a,b)=>(b.d||0)-(a.d||0)):iRows.slice().reverse()).slice(0,6);
+if(!rec.length)E(rc,'small','Nothing yet. Your attempts will be listed here.');
+rec.forEach(x=>{const r=E(rc,'div','','rc');E(r,'div',x.s);E(r,'span',Math.round(x.sc)+'/'+x.tt+(x.d?' · '+x.d.toLocaleDateString():''))});
+}
+async function insights(){box.innerHTML='';E(E(box,'div','','rd'),'small','Loading your insights...');iErr=false;try{iRows=await load()}catch(e){iRows=[];iErr=true}renderInsights()}
+
+/* ---------- Profile ---------- */
+let pPer='month',pRows=[],who={n:'',p:''},editMode=false,focusKey=null;
+const getP=()=>{try{return JSON.parse(localStorage.getItem('tushar_profile')||'{}')}catch(e){return {}}};
+const setP=o=>{try{localStorage.setItem('tushar_profile',JSON.stringify(o))}catch(e){alert('Could not save. Try a smaller photo.')}};
+const fi=document.createElement('input');fi.type='file';fi.accept='image/*';fi.hidden=true;document.body.appendChild(fi);
+fi.onchange=()=>{const f=fi.files[0];fi.value='';if(!f)return;
+const im=new Image(),u=URL.createObjectURL(f);
+im.onload=()=>{const s=256,c=document.createElement('canvas');c.width=c.height=s;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,s,s);URL.revokeObjectURL(u);const p=getP();p.photo=c.toDataURL('image/jpeg',.85);setP(p);renderProfile()};
+im.onerror=()=>alert('Could not read that photo.');im.src=u};
+function renderProfile(){
+box.innerHTML='';
+const P=getP();
+const nm=P.name||(typeof uname==='string'&&uname)||who.n.split('@')[0]||'Student';
+const h=E(box,'div','','ph');
+const w=E(h,'div','','pavw');
+if(P.photo){const im=E(w,'img');im.src=P.photo;im.alt=''}else E(w,'div',nm.charAt(0).toUpperCase(),'pav2');
+const cb=E(w,'button','','pcam');cb.innerHTML=ic('cam');cb.setAttribute('aria-label','Change photo');cb.onclick=()=>fi.click();
+const tx=E(h,'div','','ptx');E(tx,'b',nm);E(tx,'span',P.program||'Add your program');if(P.loc)E(tx,'em','📍 '+P.loc);
+E(h,'button','✏️ Edit Profile','ebtn').onclick=()=>{editMode=true;focusKey='name';renderProfile()};
+
+const d=E(box,'div','','rd');head(d,'user','Profile Details');
+const F=[['name','Name',nm],['program','Program',P.program||''],['role','Target Role',P.role||''],['loc','Location',P.loc||'']];
+const ins={};
+F.forEach(f=>{const r=E(d,'div','','pr'),c=E(r,'div');E(c,'small',f[1]);
+if(editMode){const i=E(c,'input');i.value=f[2];i.placeholder=f[1];i.maxLength=60;ins[f[0]]=i}
+else{E(c,'b',f[2]||'Not set');const b=E(r,'button');b.innerHTML=ic('pen');b.setAttribute('aria-label','Edit '+f[1]);b.onclick=()=>{editMode=true;focusKey=f[0];renderProfile()}}});
+if(editMode){
+if(focusKey&&ins[focusKey])setTimeout(()=>ins[focusKey].focus(),50);
+const r2=E(d,'div','','row2');
+E(r2,'button','Cancel','ab').onclick=()=>{editMode=false;renderProfile()};
+E(r2,'button','Save changes','ab').onclick=()=>{
+const o=getP();F.forEach(f=>{o[f[0]]=ins[f[0]].value.trim()});setP(o);
+if(typeof uname==='string'){uname=(o.name||'').slice(0,20);try{localStorage.setItem('tushar_name',uname)}catch(e){}greet()}
+editMode=false;renderProfile()};
+}
+
+const rows=inRange(pRows,pPer);
+const pg=E(box,'div','','rd');const ph=head(pg,'chart','Your Progress');period(ph,pRows,pPer,v=>{pPer=v;renderProfile()});
+E(pg,'small','Keep practising to improve your placement readiness.');
+const sess=rows.filter(x=>['gd','ext','pi','cv'].includes(x.a)).length;
+const qs=rows.filter(x=>x.a==='quiz'||x.a==='ca').reduce((s,x)=>s+x.tt,0);
+const g=E(pg,'div','','st3');
+[['📝',sess,'Practice Sessions','rgba(109,107,255,.12)'],['🎯',qs,'Questions Completed','rgba(52,211,153,.12)'],['🔥',streak(pRows),'Day Streak','rgba(255,178,63,.14)']].forEach(i=>{const x=E(g,'div');x.style.background=i[3];E(x,'i',i[0]);E(x,'b',String(i[1]));E(x,'span',i[2])});
+
+const ac=E(box,'div','','rd');head(ac,'spark','Account');
+E(ac,'small',(who.n?who.n:'Signed in')+(who.p?' · '+who.p:''));
+const r3=E(ac,'div','','row2');
+E(r3,'button','🌓 Light / dark','ab').onclick=()=>document.getElementById('tBtn').click();
+E(r3,'button','🚪 Log out','ab').onclick=()=>{location.href='/.auth/logout?post_logout_redirect_uri=/'};
+}
+async function profile(){
+box.innerHTML='';E(E(box,'div','','rd'),'small','Loading your profile...');editMode=false;
+try{const j=await (await fetch('/.auth/me')).json();const u=j.clientPrincipal;if(u)who={n:u.userDetails||'',p:u.identityProvider==='github'?'GitHub':u.identityProvider==='aad'?'Microsoft':(u.identityProvider||'')}}catch(e){}
+try{pRows=await load()}catch(e){pRows=[]}
+renderProfile()}
+
+const o=showHome;showHome=function(on){o(on);box.style.display='none'};
+function openInfo(k){
+current=null;msgs.innerHTML='';showHome(false);$('form').style.display='none';
+box.style.display='block';scroll.scrollTop=0;
+drawer.classList.remove('open');scrim.classList.remove('open');
+(k==='prog'?insights:profile)();
+}
+document.addEventListener('click',e=>{
+const b=e.target.closest&&e.target.closest('[data-go]');if(!b)return;
+const k=b.dataset.go;if(k!=='prog'&&k!=='prof')return;
+e.stopImmediatePropagation();e.preventDefault();
+document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go===k));
+openInfo(k);
+},true);
+})();
 </script>
 </body>
 </html>
