@@ -1,0 +1,20 @@
+{
+  "Marketing": [
+    {"q":"Which is NOT one of the 4Ps of marketing?","o":["Product","Price","Place","Profit"],"a":3},
+    {"q":"STP stands for?","o":["Segmentation, Targeting, Positioning","Sales, Trade, Profit","Strategy, Tactics, Planning","Survey, Test, Pilot"],"a":0},
+    {"q":"USP stands for?","o":["Unique Selling Proposition","Universal Sales Plan","United Service Policy","Unit Sales Price"],"a":0}
+  ],
+  "Finance": [
+    {"q":"What does ROI stand for?","o":["Return on Investment","Rate of Inflation","Revenue over Income","Risk of Interest"],"a":0},
+    {"q":"Which statement shows assets and liabilities?","o":["Balance sheet","Income statement","Cash budget","Trial note"],"a":0},
+    {"q":"Which of these is a current asset?","o":["Cash","Land","Patents","Machinery"],"a":0}
+  ],
+  "Strategy": [
+    {"q":"In SWOT, what does the O stand for?","o":["Operations","Opportunities","Objectives","Output"],"a":1},
+    {"q":"Who proposed the Five Forces framework?","o":["Michael Porter","Philip Kotler","Peter Drucker","Henry Mintzberg"],"a":0}
+  ],
+  "HR": [
+    {"q":"What is the highest need in Maslow's hierarchy?","o":["Self-actualization","Safety","Esteem","Social"],"a":0},
+    {"q":"What does KPI stand for?","o":["Key Performance Indicator","Key Profit Index","Known Process Input","Key Planning Idea"],"a":0}
+  ]
+}
