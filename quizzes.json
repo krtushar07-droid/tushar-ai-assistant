@@ -1,20 +1,612 @@
 {
-  "Marketing": [
-    {"q":"Which is NOT one of the 4Ps of marketing?","o":["Product","Price","Place","Profit"],"a":3},
-    {"q":"STP stands for?","o":["Segmentation, Targeting, Positioning","Sales, Trade, Profit","Strategy, Tactics, Planning","Survey, Test, Pilot"],"a":0},
-    {"q":"USP stands for?","o":["Unique Selling Proposition","Universal Sales Plan","United Service Policy","Unit Sales Price"],"a":0}
-  ],
-  "Finance": [
-    {"q":"What does ROI stand for?","o":["Return on Investment","Rate of Inflation","Revenue over Income","Risk of Interest"],"a":0},
-    {"q":"Which statement shows assets and liabilities?","o":["Balance sheet","Income statement","Cash budget","Trial note"],"a":0},
-    {"q":"Which of these is a current asset?","o":["Cash","Land","Patents","Machinery"],"a":0}
-  ],
-  "Strategy": [
-    {"q":"In SWOT, what does the O stand for?","o":["Operations","Opportunities","Objectives","Output"],"a":1},
-    {"q":"Who proposed the Five Forces framework?","o":["Michael Porter","Philip Kotler","Peter Drucker","Henry Mintzberg"],"a":0}
-  ],
-  "HR": [
-    {"q":"What is the highest need in Maslow's hierarchy?","o":["Self-actualization","Safety","Esteem","Social"],"a":0},
-    {"q":"What does KPI stand for?","o":["Key Performance Indicator","Key Profit Index","Known Process Input","Key Planning Idea"],"a":0}
-  ]
+ "Marketing": [
+  {
+   "q": "Which of the 4Ps deals with distribution channels?",
+   "o": [
+    "Product",
+    "Price",
+    "Place",
+    "Promotion"
+   ],
+   "a": 2
+  },
+  {
+   "q": "What does STP stand for?",
+   "o": [
+    "Segmentation, Targeting, Positioning",
+    "Sales, Targets, Profit",
+    "Strategy, Tactics, Plan",
+    "Survey, Test, Pilot"
+   ],
+   "a": 0
+  },
+  {
+   "q": "A brand's unique place in the customer's mind is called:",
+   "o": [
+    "Packaging",
+    "Positioning",
+    "Pricing",
+    "Promotion"
+   ],
+   "a": 1
+  },
+  {
+   "q": "In the BCG matrix, high growth with low market share is a:",
+   "o": [
+    "Star",
+    "Cash cow",
+    "Question mark",
+    "Dog"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Pricing based on how much customers think a product is worth is:",
+   "o": [
+    "Cost-plus pricing",
+    "Value-based pricing",
+    "Penetration pricing",
+    "Bundle pricing"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Setting a high launch price and lowering it later is called:",
+   "o": [
+    "Penetration pricing",
+    "Skimming",
+    "Predatory pricing",
+    "Loss leading"
+   ],
+   "a": 1
+  },
+  {
+   "q": "CRM stands for:",
+   "o": [
+    "Consumer Revenue Model",
+    "Central Retail Marketing",
+    "Customer Relationship Management",
+    "Cost Reduction Method"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Which is a pull strategy?",
+   "o": [
+    "Trade discounts to retailers",
+    "Dealer incentives",
+    "Sales force push",
+    "Advertising to end consumers"
+   ],
+   "a": 3
+  },
+  {
+   "q": "The correct order of the product life cycle is:",
+   "o": [
+    "Growth, Introduction, Maturity, Decline",
+    "Introduction, Maturity, Growth, Decline",
+    "Introduction, Growth, Maturity, Decline",
+    "Introduction, Decline, Growth, Maturity"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Net Promoter Score (NPS) mainly measures:",
+   "o": [
+    "Customer loyalty",
+    "Ad reach",
+    "Employee pay",
+    "Stock price"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Brand recall without any prompt is called:",
+   "o": [
+    "Aided recall",
+    "Recognition",
+    "Conversion",
+    "Unaided recall"
+   ],
+   "a": 3
+  },
+  {
+   "q": "The extended marketing mix for services adds:",
+   "o": [
+    "Only people",
+    "People, process and physical evidence",
+    "Only process",
+    "Politics and policy"
+   ],
+   "a": 1
+  }
+ ],
+ "Finance": [
+  {
+   "q": "ROE is calculated as:",
+   "o": [
+    "Net income / Shareholders' equity",
+    "Revenue / Assets",
+    "Debt / Equity",
+    "Profit / Sales"
+   ],
+   "a": 0
+  },
+  {
+   "q": "EBITDA stands for earnings before:",
+   "o": [
+    "Income, bonus, tax, debt and assets",
+    "Interest, taxes, depreciation and amortisation",
+    "Interest, tax, debt and assets",
+    "Investment, bonds, taxes and dividends"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Current ratio equals:",
+   "o": [
+    "Current liabilities / Current assets",
+    "Total debt / Equity",
+    "Current assets / Current liabilities",
+    "Sales / Assets"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Time value of money means:",
+   "o": [
+    "Prices never change",
+    "A rupee today is worth more than a rupee tomorrow",
+    "Interest is illegal",
+    "Time is money in wages"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Which statement shows financial position at a point in time?",
+   "o": [
+    "Income statement",
+    "Cash flow statement",
+    "Budget",
+    "Balance sheet"
+   ],
+   "a": 3
+  },
+  {
+   "q": "Which is NOT a financial statement?",
+   "o": [
+    "Balance sheet",
+    "Income statement",
+    "Marketing plan",
+    "Cash flow statement"
+   ],
+   "a": 2
+  },
+  {
+   "q": "P/E ratio is price per share divided by:",
+   "o": [
+    "Earnings per share",
+    "Dividend per share",
+    "Book value",
+    "Sales per share"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Debt-to-equity compares total debt with:",
+   "o": [
+    "Revenue",
+    "Shareholders' equity",
+    "Profit",
+    "Inventory"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Gross margin is:",
+   "o": [
+    "Net profit / Sales",
+    "(Revenue - COGS) / Revenue",
+    "EBITDA / Debt",
+    "Cash / Sales"
+   ],
+   "a": 1
+  },
+  {
+   "q": "A positive NPV usually means the project should be:",
+   "o": [
+    "Rejected",
+    "Delayed",
+    "Accepted",
+    "Insured"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Which of these is a liability?",
+   "o": [
+    "Inventory",
+    "Accounts payable",
+    "Cash",
+    "Machinery"
+   ],
+   "a": 1
+  },
+  {
+   "q": "A dividend is:",
+   "o": [
+    "A loan from a bank",
+    "A tax paid by shareholders",
+    "A distribution of profit to shareholders",
+    "A fee paid to auditors"
+   ],
+   "a": 2
+  }
+ ],
+ "Strategy": [
+  {
+   "q": "Porter's generic strategies are cost leadership, focus and:",
+   "o": [
+    "Diversification",
+    "Differentiation",
+    "Integration",
+    "Outsourcing"
+   ],
+   "a": 1
+  },
+  {
+   "q": "SWOT stands for strengths, weaknesses, opportunities and:",
+   "o": [
+    "Targets",
+    "Tactics",
+    "Threats",
+    "Trends"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Blue Ocean Strategy is about:",
+   "o": [
+    "Price wars",
+    "Creating uncontested market space",
+    "Copying competitors",
+    "Cutting costs only"
+   ],
+   "a": 1
+  },
+  {
+   "q": "A new product sold in an existing market is, in Ansoff's matrix:",
+   "o": [
+    "Market penetration",
+    "Diversification",
+    "Market development",
+    "Product development"
+   ],
+   "a": 3
+  },
+  {
+   "q": "The idea of 'core competence' was introduced by:",
+   "o": [
+    "Prahalad and Hamel",
+    "Kotler and Keller",
+    "Porter and Drucker",
+    "Maslow and Herzberg"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Owning more stages of your supply chain is called:",
+   "o": [
+    "Outsourcing",
+    "Vertical integration",
+    "Franchising",
+    "Licensing"
+   ],
+   "a": 1
+  },
+  {
+   "q": "The theory of disruptive innovation is associated with:",
+   "o": [
+    "Michael Porter",
+    "Peter Drucker",
+    "Clayton Christensen",
+    "Philip Kotler"
+   ],
+   "a": 2
+  },
+  {
+   "q": "In PESTLE, the 'L' stands for:",
+   "o": [
+    "Logistics",
+    "Labour",
+    "Legal",
+    "Leadership"
+   ],
+   "a": 2
+  },
+  {
+   "q": "A merger between two direct competitors is:",
+   "o": [
+    "Horizontal integration",
+    "Vertical integration",
+    "Conglomerate",
+    "Backward integration"
+   ],
+   "a": 0
+  },
+  {
+   "q": "The value chain framework was proposed by:",
+   "o": [
+    "Michael Porter",
+    "Henry Mintzberg",
+    "Igor Ansoff",
+    "Jim Collins"
+   ],
+   "a": 0
+  },
+  {
+   "q": "High switching costs mainly reduce the power of:",
+   "o": [
+    "Suppliers",
+    "Buyers",
+    "New entrants",
+    "Regulators"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Which is NOT a perspective in the Balanced Scorecard?",
+   "o": [
+    "Financial",
+    "Customer",
+    "Learning and growth",
+    "Political"
+   ],
+   "a": 3
+  }
+ ],
+ "HR & OB": [
+  {
+   "q": "The highest need in Maslow's hierarchy is:",
+   "o": [
+    "Safety",
+    "Esteem",
+    "Self-actualisation",
+    "Belonging"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Herzberg's two factors are hygiene factors and:",
+   "o": [
+    "Motivators",
+    "Demotivators",
+    "Rewards",
+    "Controls"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Tuckman's stages in order are:",
+   "o": [
+    "Storming, forming, norming, performing",
+    "Forming, norming, storming, performing",
+    "Performing, forming, storming, norming",
+    "Forming, storming, norming, performing"
+   ],
+   "a": 3
+  },
+  {
+   "q": "360-degree feedback collects feedback from:",
+   "o": [
+    "Only the manager",
+    "Multiple sources like peers, juniors and managers",
+    "Only customers",
+    "Only HR"
+   ],
+   "a": 1
+  },
+  {
+   "q": "KPI stands for:",
+   "o": [
+    "Key Performance Indicator",
+    "Key Profit Index",
+    "Knowledge and Process Integration",
+    "Known Product Initiative"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Theory X assumes employees:",
+   "o": [
+    "Love their work",
+    "Are self-driven",
+    "Dislike work and need control",
+    "Prefer teamwork"
+   ],
+   "a": 2
+  },
+  {
+   "q": "A leader who inspires followers with a shared vision is:",
+   "o": [
+    "Transactional",
+    "Transformational",
+    "Laissez-faire",
+    "Autocratic"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Attrition refers to:",
+   "o": [
+    "Hiring rate",
+    "Training hours",
+    "Promotion rate",
+    "Employees leaving the organisation"
+   ],
+   "a": 3
+  },
+  {
+   "q": "Emotional intelligence was popularised by:",
+   "o": [
+    "Daniel Goleman",
+    "Frederick Taylor",
+    "Henri Fayol",
+    "Elton Mayo"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Job rotation means:",
+   "o": [
+    "Firing and rehiring",
+    "Moving employees across different roles",
+    "Working night shifts",
+    "Reducing hours"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Vroom's theory of motivation is known as:",
+   "o": [
+    "Equity theory",
+    "Reinforcement theory",
+    "Expectancy theory",
+    "Goal-setting theory"
+   ],
+   "a": 2
+  },
+  {
+   "q": "In SMART goals, the 'M' stands for:",
+   "o": [
+    "Motivating",
+    "Managed",
+    "Mandatory",
+    "Measurable"
+   ],
+   "a": 3
+  }
+ ],
+ "Business & Economy": [
+  {
+   "q": "The RBI is headquartered in:",
+   "o": [
+    "Mumbai",
+    "Delhi",
+    "Chennai",
+    "Kolkata"
+   ],
+   "a": 0
+  },
+  {
+   "q": "GST was introduced in India in:",
+   "o": [
+    "2015",
+    "2016",
+    "2017",
+    "2019"
+   ],
+   "a": 2
+  },
+  {
+   "q": "The repo rate is the rate at which:",
+   "o": [
+    "Banks lend to customers",
+    "The RBI lends to banks",
+    "Government borrows abroad",
+    "Banks pay depositors"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Inflation means:",
+   "o": [
+    "A fall in all prices",
+    "A sustained rise in the general price level",
+    "A rise in exports",
+    "A fall in taxes"
+   ],
+   "a": 1
+  },
+  {
+   "q": "GDP measures:",
+   "o": [
+    "Total value of goods and services produced in a country",
+    "Government debt",
+    "Total exports",
+    "Bank deposits"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Fiscal deficit arises when government spending is more than:",
+   "o": [
+    "Its non-debt receipts",
+    "The RBI's reserves",
+    "Exports",
+    "GDP"
+   ],
+   "a": 0
+  },
+  {
+   "q": "SEBI regulates:",
+   "o": [
+    "Banks",
+    "Insurance",
+    "The securities market",
+    "Telecom"
+   ],
+   "a": 2
+  },
+  {
+   "q": "The Sensex tracks how many BSE companies?",
+   "o": [
+    "20",
+    "50",
+    "100",
+    "30"
+   ],
+   "a": 3
+  },
+  {
+   "q": "UPI was developed by:",
+   "o": [
+    "RBI",
+    "NPCI",
+    "SEBI",
+    "NITI Aayog"
+   ],
+   "a": 1
+  },
+  {
+   "q": "Monetary policy in India is decided by the:",
+   "o": [
+    "Finance Ministry alone",
+    "SEBI board",
+    "RBI's Monetary Policy Committee",
+    "Planning Commission"
+   ],
+   "a": 2
+  },
+  {
+   "q": "Startup India was launched in:",
+   "o": [
+    "2016",
+    "2012",
+    "2018",
+    "2020"
+   ],
+   "a": 0
+  },
+  {
+   "q": "Make in India was launched in:",
+   "o": [
+    "2010",
+    "2012",
+    "2014",
+    "2017"
+   ],
+   "a": 2
+  }
+ ]
 }
