@@ -5,6 +5,10 @@
 <meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Placement Lab by Tushar</title>
+  <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+<meta name="theme-color" content="#4f5bff">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#050816;--card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--text:#f5f7ff;--muted:#98a2c6;--panel:#0b1030;--glow:.38;--g:linear-gradient(135deg,#4f7bff,#9b5cff)}
@@ -1302,6 +1306,7 @@ msgs.appendChild(n);toBottom();
 }
 new MutationObserver(update).observe(msgs,{childList:true,subtree:true});
 })();
+  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
 </script>
 </body>
 </html>
