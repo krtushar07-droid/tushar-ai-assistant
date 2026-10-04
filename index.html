@@ -547,11 +547,17 @@ $('form').addEventListener('submit',e=>{e.preventDefault();voiceMode=false;ask(i
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){mic.style.display='none';document.querySelector('.sep').style.display='none'}else{
 const rec=new SR();rec.lang='en-IN';rec.continuous=true;rec.interimResults=true;
-let listening=false,saved='';
+let listening=false,saved='',voiceUsed=false;
 rec.onresult=e=>{
-let t='';
-for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript+' ';
-input.value=(saved+t).trim();
+const parts=[];
+for(let i=0;i<e.results.length;i++){
+const s=e.results[i][0].transcript.trim();
+if(!s)continue;
+const p=parts.length?parts[parts.length-1]:'';
+if(p&&s.toLowerCase().startsWith(p.toLowerCase()))parts[parts.length-1]=s;
+else parts.push(s);
+}
+input.value=(saved+parts.join(' ')).trim();
 };
 rec.onend=()=>{
 if(listening){
@@ -570,8 +576,14 @@ mic.onclick=()=>{
 if('speechSynthesis' in window)speechSynthesis.cancel();
 if(listening){listening=false;rec.stop();return}
 saved=input.value?input.value+' ':'';
-listening=true;mic.classList.add('on');
+listening=true;voiceUsed=true;mic.classList.add('on');
 try{rec.start()}catch(e){listening=false;mic.classList.remove('on')}
+};
+const oa=ask;
+ask=function(t){
+if(listening){listening=false;try{rec.stop()}catch(e){}mic.classList.remove('on')}
+if(voiceUsed){voiceMode=true;voiceUsed=false}
+return oa(t);
 };
   }
 renderHistory();
@@ -789,13 +801,13 @@ openPractice();
   /* Voice reply switch + stop speaking */
 (function(){
 let on=true;try{on=localStorage.getItem('tushar_speak')!=='0'}catch(e){}
-const b=document.createElement('button');
-b.className='ibtn';b.id='spk';b.type='button';
 const stop=()=>{if('speechSynthesis' in window)speechSynthesis.cancel()};
-function paint(){b.textContent=on?'🔊':'🔇';b.setAttribute('aria-label',on?'Spoken replies on':'Spoken replies off')}
+const b=document.createElement('button');
+b.className='nv';b.type='button';
+function paint(){b.textContent=(on?'🔊':'🔇')+' Spoken replies: '+(on?'On':'Off')}
 paint();
-b.onclick=()=>{on=!on;try{localStorage.setItem('tushar_speak',on?'1':'0')}catch(e){}paint();if(!on)stop();toast(on?'Spoken replies on':'Spoken replies off')};
-$('tBtn').before(b);
+b.onclick=()=>{on=!on;try{localStorage.setItem('tushar_speak',on?'1':'0')}catch(e){}paint();if(!on)stop()};
+document.querySelector('.dm').appendChild(b);
 const o=speak;
 speak=function(t){if(on)o(t)};
 document.querySelectorAll('[data-go]').forEach(x=>x.addEventListener('click',stop));
