@@ -2,7 +2,6 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-  <script>window.onerror=function(m,s,l){alert(m+' (line '+l+')')}</script>
 <meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Placement Lab by Tushar</title>
@@ -235,6 +234,31 @@ header{background:transparent!important;border-bottom:0}
 #history{min-height:130px}
 #fab{position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0));z-index:6;display:flex;align-items:center;gap:8px;padding:13px 18px;border-radius:12px;background:var(--g);color:#fff;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 @media(min-width:900px){#fab{bottom:28px}}
+
+/* Placement Updates Styles */
+.up-home{margin:0 0 14px;padding:16px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+.up-home h3{margin:0;font-size:16px}
+.up-pend{display:block;width:100%;margin-top:10px;padding:11px 14px;border-radius:8px;background:var(--g);color:#fff;font-weight:700;font-size:14px;text-align:left}
+.up-list{margin-top:8px}
+.up-r{display:block;width:100%;text-align:left;padding:11px 0;border-top:1px solid var(--line)}
+.up-r b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14.5px;line-height:1.35}
+.up-r span{display:block;margin-top:3px;font-size:12px;color:var(--muted)}
+.up-h{display:flex;align-items:center;justify-content:space-between;gap:10px}.up-h h3{margin:0}
+.up-b{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:13px;font-weight:600}
+.up-c{margin-top:12px;padding:14px;border-radius:8px;border:1px solid var(--line);background:var(--card2)}
+.up-c b{display:block;font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}
+.up-m{display:block;margin:4px 0 8px;font-size:12.5px;color:var(--muted)}
+.up-t{font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.up-t a{color:#3b82f6;font-weight:600}
+.up-l{margin-top:6px;padding:4px 0;font-size:13px;font-weight:700;color:#3b82f6}
+.up-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.up-a button{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:13.5px;font-weight:600}
+.up-a button.p{background:var(--g);color:#fff;border:0}
+.up-a button.d{color:#ef4444}
+.up-a button:disabled{opacity:.5}
+.up-i,.up-ta{display:block;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:15px;outline:0}
+.up-ta{min-height:180px;resize:vertical;line-height:1.5}
+.up-e{padding:10px 2px 2px;font-size:13.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -1542,94 +1566,4 @@ b.classList.add('editing');
 t.style.display='none';
 b.insertBefore(ta,t);
 b.insertBefore(bar,t);
-setTimeout(()=>{ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length)},50);
-}
-
-function openMenu(b,items){
-menu.innerHTML='';
-items.forEach(it=>{
-const x=document.createElement('button');x.type='button';x.textContent=it[0];
-x.onclick=ev=>{ev.stopPropagation();closeMenu();it[1]()};
-menu.appendChild(x);
-});
-menu.style.display='flex';menuFor=b;
-const r=b.getBoundingClientRect(),w=menu.offsetWidth,h=menu.offsetHeight;
-let top=r.bottom+8;
-if(top+h>innerHeight-80)top=r.top-h-8;
-top=Math.min(Math.max(top,70),innerHeight-h-80);
-let left=b.closest('.row').classList.contains('user')?r.right-w:r.left;
-left=Math.min(Math.max(left,8),innerWidth-w-8);
-menu.style.top=top+'px';menu.style.left=left+'px';
-}
-
-function showFor(b){
-if(b.classList.contains('editing'))return;
-if(menuFor===b){closeMenu();return}
-const row=b.closest('.row'),t=b.querySelector('.txt');
-if(!row||!t)return;
-const txt=t.textContent.trim();
-const items=[];
-if(row.classList.contains('bot')){
-if(t.querySelector('.dots')||!txt||txt==='Loading chat...')return;
-if(!SKIPCOPY.test(txt))items.push(['Copy',()=>doCopy(txt)]);
-const rows=[...msgs.querySelectorAll('.row')];
-const k=rows.indexOf(row);
-const ur=k>0?rows[k-1]:null;
-const loc=k===rows.length-1&&!send.disabled?locate(ur):null;
-if(loc)items.push(['Regenerate',()=>redo(ur,loc,loc.text)]);
-}else{
-items.push(['Copy',()=>doCopy(txt)]);
-const loc=!send.disabled?locate(row):null;
-if(loc)items.push(['Edit',()=>startEdit(row,loc)]);
-}
-if(items.length)openMenu(b,items);
-}
-
-msgs.addEventListener('click',e=>{
-const b=e.target.closest('.bubble');
-if(!b||e.target.closest('textarea,button,a'))return;
-if(String(getSelection()).trim())return;
-showFor(b);
-});
-
-document.addEventListener('click',e=>{
-if(!e.target.closest('#msgMenu')&&!e.target.closest('#msgs .bubble'))closeMenu();
-});
-scroll.addEventListener('scroll',closeMenu,{passive:true});
-
-const gr=getReply;
-getReply=async function(t,p,a){
-if(pendingCtx){
-const x=pendingCtx;pendingCtx='';
-t='[Earlier conversation, for context only]\n'+x+'\n[New message from the user]\n'+t;
-}
-return gr(t,p,a);
-};
-
-const prev=ask;
-ask=function(t){
-const txt=typeof t==='string'?t.trim():'';
-const c0=current;
-const prevId=c0?c0.lastId:null;
-const idx0=c0?c0.messages.length:0;
-const hadFiles=picked.length>0;
-const ctx0=pendingCtx;
-const p=prev(t);
-const c=current;
-if(txt&&c){
-Promise.resolve(p).then(()=>{
-if(current!==c)return;
-const rows=msgs.querySelectorAll('.row');
-const ur=rows[rows.length-2];
-if(!ur||!ur.classList.contains('user'))return;
-const id='t'+(++seq);
-T[id]={chat:c.id,i:idx0,text:t,prevId:prevId,files:hadFiles,ctx:ctx0};
-ur.dataset.turn=id;
-});
-}
-return p;
-};
-})();
-</script>
-</body>
-</html>
+setTimeout(()=>{ta.focus();ta.setSelectionRange(ta.value.length,ta.val
