@@ -140,7 +140,15 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 @media(min-width:700px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}.cat{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
-#side{display:none;position:fixed;left:0;top:0;bottom:0;width:250px;z-index:5;background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:6px;padding:calc(18px + env(safe-area-inset-top,0)) 14px 16px}
+#side{display:none !important;}
+@media(min-width:900px) and (orientation: landscape){
+  #side{display:flex !important;}
+  .app{padding-left:250px}
+  #bnav{display:none}
+  .wrap{max-width:980px!important}
+}
+
+#side{position:fixed;left:0;top:0;bottom:0;width:250px;z-index:5;background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:6px;padding:calc(18px + env(safe-area-inset-top,0)) 14px 16px}
 #side .lg{font-size:22px;font-weight:800;line-height:1.1;padding:4px 10px 16px}
 #side .lg small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:4px}
 .nv{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;font-weight:600;font-size:15px;color:var(--muted);text-align:left;width:100%;text-decoration:none}
@@ -159,7 +167,6 @@ form{padding:8px 12px calc(14px + env(safe-area-inset-bottom,0));min-width:0;max
 .rb i{height:7px;border-radius:4px;background:var(--line);overflow:hidden;display:block}
 .rb u{display:block;height:100%;width:0;background:var(--g)}
 .rb em{font-style:normal;color:var(--muted);text-align:right}
-@media(min-width:900px){#side{display:flex}.app{padding-left:250px}#bnav{display:none}.wrap{max-width:980px!important}}
 
 [data-theme=light] .rd,[data-theme=light] .cat,[data-theme=light] .sug,[data-theme=light] .up-home{box-shadow:0 2px 6px rgba(0,0,0,.03)}
 [data-theme=light] .nv.on,[data-theme=light] .nv:hover{background:var(--card2);color:#1E40AF}
@@ -1610,5 +1617,15 @@ const p=prev(t);
 const c=current;
 if(txt&&c){
 Promise.resolve(p).then(()=>{
+if(current!==c)return;
+const rows=msgs.querySelectorAll('.row');
+const ur=rows[rows.length-2];
+if(!ur||!ur.classList.contains('user'))return;
+const id='t'+(++seq);
+T[id]={chat:c.id,i:idx0,text:t,prevId:prevId,files:hadFiles,ctx:ctx0};
+ur.dataset.turn=id;
+});
+}
+return p;
 
-if(current!==c)r
+}
