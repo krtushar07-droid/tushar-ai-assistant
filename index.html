@@ -1873,5 +1873,70 @@ refresh(true);
 })();
 
 </script>
+  <style>
+  /* Styling for the in-chat "New Chat" button */
+  #composerNewChat {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: none; /* hidden on home dashboard */
+    place-items: center;
+    background: var(--card2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    flex: none;
+    margin-right: 4px;
+    cursor: pointer;
+  }
+  #composerNewChat svg {
+    width: 18px;
+    height: 18px;
+  }
+</style>
+
+<script>
+(function() {
+  const composer = document.querySelector('.composer');
+  const attachBtn = document.getElementById('attach');
+  if (!composer || !attachBtn) return;
+
+  // 1. Create the dedicated New Chat button inside the chat bar
+  const newBtn = document.createElement('button');
+  newBtn.id = 'composerNewChat';
+  newBtn.type = 'button';
+  newBtn.title = 'Start New Chat';
+  newBtn.setAttribute('aria-label', 'New Chat');
+  // Uses the existing 'pen' / edit icon from your icon set
+  newBtn.innerHTML = typeof ic === 'function' ? ic('pen') : '✎';
+  
+  // Insert it right next to the attachment '+' button
+  composer.insertBefore(newBtn, attachBtn.nextSibling);
+
+  // 2. Action: Wipe current chat and focus input without leaving Tushar AI
+  newBtn.onclick = (e) => {
+    e.preventDefault();
+    current = null;
+    document.getElementById('msgs').innerHTML = '';
+    document.getElementById('scroll').scrollTop = 0;
+    const inp = document.getElementById('input');
+    if (inp) {
+      inp.value = '';
+      inp.focus();
+    }
+  };
+
+  // 3. Show this button ONLY when chatting (hide on Home dashboard)
+  const observer = new MutationObserver(() => {
+    const home = document.getElementById('home');
+    const isChatting = home && home.style.display === 'none';
+    newBtn.style.display = isChatting ? 'grid' : 'none';
+  });
+
+  const homeSec = document.getElementById('home');
+  if (homeSec) {
+    observer.observe(homeSec, { attributes: true, attributeFilter: ['style'] });
+  }
+})();
+</script>
 </body>
 </html>
