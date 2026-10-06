@@ -1767,6 +1767,117 @@ el(d,'small','Loading updates...');
 try{
 const j=await api('GET');
 data=j.items||[];admin=!!j.admin;lastFetch=Date.now();
+
+/* Placement Updates (Notification Bell Version) */
+(function(){
+// 1. Add Bell Icon to dictionary dynamically
+P.bell = 'M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0';
+
+const box=document.createElement('div');box.id='updBox';box.style.display='none';
+$('msgs').before(box);
+
+// 2. Inject Bell Button into the Top Header
+const hdr = document.querySelector('header');
+const sBtn = document.getElementById('sBtn');
+const uBtn = document.createElement('button');
+uBtn.className = 'ibtn';
+uBtn.setAttribute('aria-label', 'Placement Updates');
+uBtn.style.position = 'relative';
+uBtn.innerHTML = ic('bell') + '<span id="uBadge" style="display:none;position:absolute;top:8px;right:8px;width:8px;height:8px;background:#ef4444;border-radius:50%;box-shadow:0 0 0 2px var(--card);"></span>';
+hdr.insertBefore(uBtn, sBtn);
+
+// 3. Bind Click to Open Full Screen
+uBtn.onclick = () => {
+  document.querySelectorAll('[data-go]').forEach(x => x.classList.remove('on'));
+  openUpdates();
+};
+
+const st=document.createElement('style');
+st.textContent='#updBox{padding-bottom:24px}'
++'.up-pend{display:block;width:100%;margin-top:10px;padding:11px 14px;border-radius:8px;background:var(--g);color:#fff;font-weight:700;font-size:14px;text-align:left}'
++'.up-list{margin-top:8px}'
++'.up-r{display:block;width:100%;text-align:left;padding:11px 0;border-top:1px solid var(--line)}'
++'.up-r b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14.5px;line-height:1.35}'
++'.up-r span{display:block;margin-top:3px;font-size:12px;color:var(--muted)}'
++'.up-h{display:flex;align-items:center;justify-content:space-between;gap:10px}.up-h h3{margin:0}'
++'.up-b{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:13px;font-weight:600}'
++'.up-c{margin-top:12px;padding:14px;border-radius:8px;border:1px solid var(--line);background:var(--card2)}'
++'.up-c b{display:block;font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}'
++'.up-m{display:block;margin:4px 0 8px;font-size:12.5px;color:var(--muted)}'
++'.up-t{font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}'
++'.up-t a{color:#3b82f6;font-weight:600}'
++'.up-l{margin-top:6px;padding:4px 0;font-size:13px;font-weight:700;color:#3b82f6}'
++'.up-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}'
++'.up-a button{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:13.5px;font-weight:600}'
++'.up-a button.p{background:var(--g);color:#fff;border:0}'
++'.up-a button.d{color:#ef4444}'
++'.up-a button:disabled{opacity:.5}'
++'.up-i,.up-ta{display:block;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:15px;outline:0}'
++'.up-ta{min-height:180px;resize:vertical;line-height:1.5}'
++'.up-e{padding:10px 2px 2px;font-size:13.5px;color:var(--muted)}';
+document.head.appendChild(st);
+
+let data=[],admin=false,tab='pending',lastFetch=0;
+
+function el(p,tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;p.appendChild(e);return e}
+
+async function api(method,path,body){
+const r=await fetch('/api/updates'+(path||''),{method:method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+if(!r.ok)throw new Error(String(r.status));
+return r.json();
+}
+
+function linkify(target,text){
+target.textContent='';
+String(text).split(/(https?:\/\/[^\s<>"']+)/g).forEach(part=>{
+if(/^https?:\/\//.test(part)){
+const a=document.createElement('a');a.href=part;a.target='_blank';a.rel='noopener noreferrer';a.textContent=part;target.appendChild(a);
+}else if(part)target.appendChild(document.createTextNode(part));
+});
+}
+function who(s){const n=String(s||'').replace(/<[^>]*>/g,'').replace(/"/g,'').trim();return n||String(s||'')}
+function when(x){
+const v=x.sent||x.created;
+const d=new Date(isNaN(v)?v:Number(v));
+return isNaN(d)?'':d.toLocaleString([],{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'});
+}
+
+function renderHome(){
+  const badge = document.getElementById('uBadge');
+  if(!badge) return;
+  // Show red dot if there are any approved updates, or pending if admin
+  const hasUpdates = data.some(y => y.status === 'approved') || (admin && data.some(y => y.status === 'pending'));
+  badge.style.display = hasUpdates ? 'block' : 'none';
+}
+
+async function refresh(force){
+  if(!force&&Date.now()-lastFetch<20000)return;
+  lastFetch=Date.now();
+  try{
+    const j=await api('GET');
+    data=j.items||[];admin=!!j.admin;
+    renderHome();
+  }catch(e){
+    // Silently fail if updates API is unreachable, dot remains hidden
+  }
+}
+
+function openUpdates(t){
+if(t)tab=t;
+current=null;msgs.innerHTML='';showHome(false);$('form').style.display='none';
+drawer.classList.remove('open');scrim.classList.remove('open');
+box.style.display='block';scroll.scrollTop=0;
+load();
+}
+
+async function load(){
+box.innerHTML='';
+const d=el(box,'div','','rd');
+el(d,'h3','Placement Updates');
+el(d,'small','Loading updates...');
+try{
+const j=await api('GET');
+data=j.items||[];admin=!!j.admin;lastFetch=Date.now();
 }catch(e){
 d.innerHTML='';
 el(d,'h3','Placement Updates');
@@ -1855,7 +1966,7 @@ x.title=t;x.body=bd;
 });
 }
 
-const ICON=ic('mail');
+const ICON=ic('bell');
 function nv(label){
 const b=document.createElement('button');b.className='nv';b.type='button';b.dataset.go='upd';
 const s=document.createElement('span');s.style.display='flex';s.innerHTML=ICON;
@@ -1868,18 +1979,12 @@ const b=nv('Placement Updates');
 if(ask2)p.insertBefore(b,ask2);else p.appendChild(b);
 });
 
-document.addEventListener('click',e=>{
-const b=e.target.closest&&e.target.closest('[data-go="upd"]');if(!b)return;
-e.stopImmediatePropagation();e.preventDefault();
-document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('on',x.dataset.go==='upd'));
-openUpdates();
-},true);
-
 const o=showHome;
 showHome=function(on){o(on);box.style.display='none';if(on)refresh()};
 
 refresh(true);
 })();
+
 </script>
 </body>
 </html>
